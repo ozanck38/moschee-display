@@ -30,6 +30,22 @@ const ISLAMIC_MONTHS = {
 };
 
 // ===========================
+// Error Notification
+// ===========================
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-toast';
+    errorDiv.textContent = message;
+    document.body.appendChild(errorDiv);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
+}
+
+// ===========================
 // Initialization
 // ===========================
 
@@ -119,35 +135,63 @@ async function loadPrayerTimes() {
         console.log('📡 Fetching prayer times from:', url);
         
         const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
         const data = await response.json();
         
-        if (data && data.length > 0) {
-            // Find today's prayer times using MiladiTarihKisaIso8601 format
-            const todayStr = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
-            
-            const todayData = data.find(d => d.MiladiTarihKisaIso8601 === todayStr);
-            
-            if (!todayData) {
-                console.warn('⚠️ Could not find prayer times for today:', todayStr);
-                console.log('📅 Using first available date:', data[0].MiladiTarihKisaIso8601);
-            }
-            
-            const selectedData = todayData || data[0];
-            
-            prayerTimes = {
-                imsak: selectedData.Imsak,
-                gunes: selectedData.Gunes,
-                ogle: selectedData.Ogle,
-                ikindi: selectedData.Ikindi,
-                aksam: selectedData.Aksam,
-                yatsi: selectedData.Yatsi
-            };
-            
-            updatePrayerTimesDisplay();
-            console.log('✅ Prayer times loaded:', prayerTimes);
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            throw new Error('Invalid prayer times data received');
         }
+        
+        // Find today's prayer times using MiladiTarihKisaIso8601 format
+        const todayStr = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+        
+        const todayData = data.find(d => d.MiladiTarihKisaIso8601 === todayStr);
+        
+        if (!todayData) {
+            console.warn('⚠️ Could not find prayer times for today:', todayStr);
+            console.log('📅 Using first available date:', data[0].MiladiTarihKisaIso8601);
+        }
+        
+        const selectedData = todayData || data[0];
+        
+        // Validate prayer time data
+        const requiredFields = ['Imsak', 'Gunes', 'Ogle', 'Ikindi', 'Aksam', 'Yatsi'];
+        const missingFields = requiredFields.filter(field => !selectedData[field]);
+        
+        if (missingFields.length > 0) {
+            throw new Error(`Missing prayer times: ${missingFields.join(', ')}`);
+        }
+        
+        prayerTimes = {
+            imsak: selectedData.Imsak,
+            gunes: selectedData.Gunes,
+            ogle: selectedData.Ogle,
+            ikindi: selectedData.Ikindi,
+            aksam: selectedData.Aksam,
+            yatsi: selectedData.Yatsi
+        };
+        
+        updatePrayerTimesDisplay();
+        console.log('✅ Prayer times loaded:', prayerTimes);
+        
     } catch (error) {
-        console.error('❌ Prayer times loading failed:', error);
+        console.error('❌ Prayer times loading failed:', error.message);
+        
+        // Show specific error message
+        let errorMessage = '⚠️ Gebetszeiten konnten nicht geladen werden';
+        
+        if (error.message.includes('HTTP')) {
+            errorMessage = '⚠️ Gebetszeiten-Server nicht erreichbar';
+        } else if (error.message.includes('Invalid')) {
+            errorMessage = '⚠️ Ungültige Gebetszeiten-Daten';
+        }
+        
+        showError(errorMessage);
+        
         // Set placeholder times
         prayerTimes = {
             imsak: '05:30',
@@ -234,6 +278,13 @@ function updateNextPrayerTimer() {
     timerElement.textContent = 
         `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     
+    // Add urgent state if less than 5 minutes remaining
+    if (nextPrayerInfo.secondsUntil < 300) {
+        timerElement.classList.add('info__clock--urgent');
+    } else {
+        timerElement.classList.remove('info__clock--urgent');
+    }
+    
     // Decrease time by one second
     nextPrayerInfo.secondsUntil -= 1;
     
@@ -272,56 +323,85 @@ function highlightCurrentPrayer(nextPrayer) {
 // ===========================
 
 async function loadWeather() {
+    const tempElement = document.getElementById('weather-temp');
+    const iconElement = document.getElementById('weather-icon');
+    
     try {
         // Try Netlify Function first (for production)
         const netlifyUrl = `/.netlify/functions/weather?city=${encodeURIComponent(config.city)}`;
         
+        let response;
+        let data;
+        let isNetlifyFunction = false;
+        
         try {
-            const response = await fetch(netlifyUrl);
+            response = await fetch(netlifyUrl);
             if (response.ok) {
-                const data = await response.json();
-                
-                if (data && data.main) {
-                    const temp = Math.round(data.main.temp);
-                    const icon = data.weather[0].icon;
-                    
-                    document.getElementById('weather-temp').textContent = `${temp}°`;
-                    document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
-                    
-                    console.log('✅ Weather loaded via Netlify Function:', temp + '°C');
-                    return;
-                }
+                data = await response.json();
+                isNetlifyFunction = true;
+                console.log('ℹ️ Using Netlify Function for weather');
+            } else {
+                throw new Error('Netlify function not available');
             }
         } catch (netlifyError) {
-            console.log('ℹ️ Netlify Function not available, falling back to direct API');
-        }
-        
-        // Fallback: Direct API call (for local development)
-        const API_KEY = config.openweather_api_key || 'YOUR_API_KEY_HERE';
-        
-        if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
-            console.warn('⚠️ OpenWeather API key not configured');
-            document.getElementById('weather-temp').textContent = '--°';
-            return;
-        }
-        
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${config.city}&units=metric&appid=${API_KEY}&lang=de`;
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data && data.main) {
-            const temp = Math.round(data.main.temp);
-            const icon = data.weather[0].icon;
+            console.log('ℹ️ Netlify Function not available, trying direct API');
             
-            document.getElementById('weather-temp').textContent = `${temp}°C`;
-            document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+            // Fallback: Direct API call (for local development)
+            const API_KEY = config.openweather_api_key;
             
-            console.log('✅ Weather loaded via direct API:', temp + '°C');
+            if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE' || API_KEY.trim() === '') {
+                throw new Error('OpenWeather API key not configured');
+            }
+            
+            const directUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(config.city)}&units=metric&appid=${API_KEY}&lang=de`;
+            
+            response = await fetch(directUrl);
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Invalid API key');
+                } else if (response.status === 404) {
+                    throw new Error('City not found');
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            }
+            
+            data = await response.json();
+            console.log('ℹ️ Using direct API for weather');
         }
+        
+        // Process weather data
+        if (!data || !data.main || !data.weather || !data.weather[0]) {
+            throw new Error('Invalid weather data received');
+        }
+        
+        const temp = Math.round(data.main.temp);
+        const icon = data.weather[0].icon;
+        
+        tempElement.textContent = `${temp}°C`;
+        iconElement.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+        iconElement.style.display = 'block';
+        
+        console.log(`✅ Weather loaded: ${temp}°C`);
+        
     } catch (error) {
-        console.error('❌ Weather loading failed:', error);
-        document.getElementById('weather-temp').textContent = '--°C';
+        console.error('❌ Weather loading failed:', error.message);
+        
+        // Show specific error message
+        let errorMessage = '⚠️ Wetter konnte nicht geladen werden';
+        
+        if (error.message.includes('not configured')) {
+            errorMessage = '⚠️ Wetter-API nicht konfiguriert';
+        } else if (error.message.includes('Invalid API key')) {
+            errorMessage = '⚠️ Ungültiger Wetter-API-Schlüssel';
+        } else if (error.message.includes('City not found')) {
+            errorMessage = '⚠️ Stadt nicht gefunden';
+        }
+        
+        showError(errorMessage);
+        tempElement.textContent = '--°C';
+        iconElement.style.display = 'none';
     }
 }
 

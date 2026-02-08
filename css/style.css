@@ -14,6 +14,8 @@
 
 .body {
     color: #fff;
+    min-width: 1280px;
+    min-height: 720px;
     width: 100vw;
     height: 100vh;
     margin: 0;
@@ -28,14 +30,13 @@
 .section {
     background-image: linear-gradient(#000c, #000c), url('../images/background.png');
     background-position: 0 0, 50%;
-    background-size: auto, cover;
-    background-repeat: no-repeat, no-repeat;
+    background-size: auto, auto;
+    background-repeat: repeat, repeat;
     flex-flow: column;
     justify-content: flex-start;
     align-items: stretch;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     overflow: hidden;
 }
@@ -73,13 +74,13 @@
 
 .container--footer {
     background-color: #ff000080;
-    flex-flow: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 5vh;
     padding-top: 0%;
     padding-bottom: 0%;
-    display: inline-flex;
+    display: flex;
+    flex-flow: row;
     box-shadow: 0 0 20px 16px #0000001a;
 }
 
@@ -114,11 +115,13 @@
 }
 
 .header__divider {
+    color: #ffffffe6;
     background-color: #fff;
-    width: clamp(100px, 120%, 500px);
+    width: 120%;
+    max-width: 100%;
     height: 2px;
-    align-self: center;
-    margin: clamp(0.3rem, 0.6vw, 0.8rem) auto;
+    position: relative;
+    margin-bottom: .4rem;
 }
 
 .header__subtitle {
@@ -126,14 +129,13 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: clamp(1rem, 1.5vw, 1.6rem);
-    margin-top: clamp(0.3rem, 0.6vw, 0.8rem);
 }
 
 .header__weather {
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     height: 50%;
     margin-left: auto;
     display: flex;
@@ -193,6 +195,7 @@
     border: 2px solid #fff3;
     border-radius: clamp(8px, 1vw, 12px);
     overflow: hidden;
+    transition: all 0.5s ease;
 }
 
 .card--active {
@@ -202,6 +205,7 @@
     background-color: #ff00000a;
     background-image: linear-gradient(170deg, #ffffff73, #fff6 20%, #ffffff4d 65%, #fff3);
     border-color: #ffffff80;
+    transform: scale(1.02);
 }
 
 .card--info {
@@ -375,8 +379,8 @@
    ======================================== */
 
 .footer {
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
     height: 80%;
     margin-bottom: 2px;
     margin-left: auto;
@@ -384,12 +388,11 @@
 }
 
 .footer__credit {
-    grid-column-gap: .4rem;
-    grid-row-gap: .4rem;
+    grid-column-gap: clamp(.2rem, .4vw, .8rem);
+    grid-row-gap: clamp(.2rem, .4vw, .8rem);
     flex-flow: row;
-    justify-content: flex-start;
-    align-items: flex-end;
-    margin-left: auto;
+    justify-content: center;
+    align-items: center;
     display: flex;
 }
 
@@ -399,14 +402,16 @@
 }
 
 .footer__logo-wrap {
-    align-self: auto;
+    height: 80%;
+    margin-right: auto;
     height: auto;
+    align-self: auto;
 }
 
 .footer__logo {
-    vertical-align: middle;
     width: 100%;
-    height: clamp(0.8rem, 1.2vh, 1.4rem);
+    height: clamp(.8rem, 1vw, 1.4rem);
+    vertical-align: middle;
 }
 
 /* ========================================
@@ -415,4 +420,60 @@
 
 .hidden {
     display: none;
+}
+
+/* Pulsing animation for urgent countdown */
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.info__clock--urgent {
+    animation: pulse 2s ease-in-out infinite;
+    color: #ffcc00 !important;
+}
+
+/* Error toast notification */
+@keyframes slideIn {
+    from { 
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to { 
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.error-toast {
+    position: fixed;
+    top: clamp(1rem, 2vw, 2rem);
+    right: clamp(1rem, 2vw, 2rem);
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    color: white;
+    padding: clamp(0.75rem, 1.5vw, 1.5rem) clamp(1rem, 2vw, 2rem);
+    border-radius: clamp(6px, 1vw, 10px);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    animation: slideIn 0.3s ease, slideOut 0.3s ease 4.7s;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
