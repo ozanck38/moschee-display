@@ -9,8 +9,8 @@
   "city_code": "10339",
 
   "_comment_announcement_tr": "Türkische Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
-  "announcement_turkish": "",
+  "announcement_turkish": "TEST - Duyuru - Hosgeldiniz!",
 
   "_comment_announcement_de": "Deutsche Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
-  "announcement_german": ""
+  "announcement_german": "TEST - Ankündigung - Herzlich Willkommen!"
 }
