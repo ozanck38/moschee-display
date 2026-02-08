@@ -58,7 +58,10 @@
     justify-content: space-between;
     width: 100%;
     max-width: 100%;
-    padding: clamp(1rem, 2vw, 3rem) clamp(2rem, 5vw, 8rem);
+    padding-left:  min(clamp(2rem, 5vw, 8rem), 6vw);
+    padding-right: min(clamp(2rem, 5vw, 8rem), 6vw);
+    padding-top:   min(clamp(1rem, 2vw, 3rem), 3vh);
+    padding-bottom:min(clamp(1rem, 2vw, 3rem), 3vh);
     display: flex;
 }
 
@@ -69,7 +72,7 @@
     justify-content: space-between;
     align-self: center;
     align-items: center;
-    height: 15vh;
+    height: 12vh;
     padding-top: 0%;
     padding-bottom: 0%;
     display: inline-flex;
@@ -78,6 +81,7 @@
 
 .container--main {
     /* Hauptinhalt (Gebetszeiten & Infos) */
+    min-height: 0;
     height: 80vh;
     gap: clamp(1rem, 2vw, 3rem); /* Same as vertical padding */
 }
@@ -87,7 +91,7 @@
     background-color: #ff000080;
     justify-content: flex-end;
     align-items: center;
-    height: 5vh;
+    height: 8vh;
     padding-top: 0%;
     padding-bottom: 0%;
     display: flex;
@@ -124,7 +128,7 @@
     letter-spacing: .1ch;
     text-transform: uppercase;
     margin: 0;
-    font-size: clamp(2rem, 3.5vw, 4rem);
+    font-size: min(clamp(2rem, 3.5vw, 4rem), 5.2vh);
     line-height: 1.2;
 }
 
@@ -142,7 +146,7 @@
     text-align: center;
     letter-spacing: 1px;
     text-transform: uppercase;
-    font-size: clamp(1rem, 1.5vw, 1.6rem);
+    font-size: min(clamp(1rem, 1.5vw, 1.6rem), 2.2vh);
 }
 
 .header__weather {
@@ -177,17 +181,19 @@
 
 .prayers {
     /* Zentriert den Gebetsbereich */
-    flex: 1;
+    min-height: 0;
+    height: 100%;
     display: flex;
     align-items: center;
 }
 
 .prayers__grid {
     /* 2 Reihen, mehrere Spalten */
+    min-height: 0;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1.4fr;
-    grid-row-gap: clamp(0.75rem, 1.5vw, 2rem);
-    grid-column-gap: clamp(0.75rem, 1.5vw, 2rem);
+    grid-row-gap:    min(clamp(0.75rem, 1.5vw, 2rem), 2.2vh);
+    grid-column-gap: min(clamp(0.75rem, 1.5vw, 2rem), 2.2vh);
     width: 100%;
     height: 100%;
     display: grid;
@@ -226,7 +232,7 @@
     background-color: #ff00000a;
     background-image: linear-gradient(170deg, #ffffff73, #fff6 20%, #ffffff4d 65%, #fff3);
     border-color: #ffffff80;
-    transform: scale(1.02);
+    filter: drop-shadow(0 6px 22px #0008);
 }
 
 .card--info {
@@ -243,7 +249,10 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: clamp(0.75rem, 1.5vw, 2rem) clamp(0.5rem, 1vw, 1.5rem);
+    padding-top:    min(clamp(0.75rem, 1.5vw, 2rem), 2vh);
+    padding-bottom: min(clamp(0.75rem, 1.5vw, 2rem), 2vh);
+    padding-left:   min(clamp(0.5rem, 1vw, 1.5rem), 1.6vw);
+    padding-right:  min(clamp(0.5rem, 1vw, 1.5rem), 1.6vw);
     display: flex;
 }
 
@@ -255,19 +264,19 @@
 
 .card__icon {
     opacity: .9;
-    height: clamp(4rem, 7vh, 8rem);
+    height: min(clamp(4rem, 7vh, 8rem), 8vh);
 }
 
 .card__icon--gunes {
-    height: clamp(4.2rem, 7.5vh, 8.5rem);
+    height: min(clamp(4.2rem, 7.5vh, 8.5rem), 8.2vh);
 }
 
 .card__icon--ikindi {
-    height: clamp(3.8rem, 6.5vh, 7.5rem);
+    height: min(clamp(3.8rem, 6.5vh, 7.5rem), 7.2vh);
 }
 
 .card__icon--yatsi {
-    height: clamp(3.6rem, 6vh, 7rem);
+    height: min(clamp(3.6rem, 6vh, 7rem), 6.8vh);
 }
 
 .card__time {
@@ -304,8 +313,8 @@
 .info__clock {
     /* Große Uhrzeit / Countdown */
     text-align: center;
-    letter-spacing: clamp(6px, 1vw, 12px);
-    font-size: clamp(2rem, 3.5vw, 4rem);
+    font-size: min(clamp(2rem, 3.5vw, 4rem), 6vh);
+    letter-spacing: min(clamp(6px, 1vw, 12px), 1.2vh);
     font-weight: 700;
     line-height: 1;
 }
@@ -314,7 +323,7 @@
     /* Datum, Wochentag, Hijri-Datum */
     color: #fffc;
     text-align: center;
-    font-size: clamp(1rem, 1.4vw, 1.6rem);
+    font-size: min(clamp(1rem, 1.4vw, 1.6rem), 2.8vh);
     font-weight: 600;
 }
 
@@ -330,7 +339,7 @@
 .info__label {
     color: #fffc;
     text-align: center;
-    font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+    font-size: min(clamp(1.1rem, 1.6vw, 1.8rem), 2.4vh);
     font-weight: 600;
 }
 
@@ -338,7 +347,7 @@
     color: #fffc;
     text-align: center;
     text-transform: uppercase;
-    font-size: clamp(1.2rem, 1.8vw, 2.2rem);
+    font-size: min(clamp(1.2rem, 1.8vw, 2.2rem), 2.6vh);
     font-weight: 600;
 }
 

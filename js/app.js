@@ -375,7 +375,7 @@ async function loadWeather() {
         const icon = data.weather[0].icon;
 
         tempElement.textContent = `${temp}°C`;
-        iconElement.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+        iconElement.src = `images/weather/${icon}.png`;
         iconElement.style.display = 'block';
 
         console.log(`✅ Weather loaded: ${temp}°C`);
