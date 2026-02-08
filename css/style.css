@@ -1,0 +1,412 @@
+/* ========================================
+   RESET & BASE
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   BODY & SECTION
+   ======================================== */
+
+.body {
+    color: #fff;
+    min-width: 1280px;
+    min-height: 720px;
+    font-family: Montserrat, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.section {
+    background-image: linear-gradient(#000c, #000c), url('../images/background.png');
+    background-position: 0 0, 50%;
+    background-size: auto, auto;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+/* ========================================
+   CONTAINERS
+   ======================================== */
+
+.container {
+    flex-flow: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    padding: clamp(1rem, 2vw, 3rem) clamp(2rem, 5vw, 8rem);
+    display: flex;
+}
+
+.container--header {
+    background-color: #0c8aa4a6;
+    flex-flow: row;
+    justify-content: space-between;
+    align-self: center;
+    align-items: center;
+    height: 15vh;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    display: inline-flex;
+    box-shadow: 0 0 20px 16px #0000001a;
+}
+
+.container--main {
+    height: 80vh;
+    gap: clamp(1rem, 2vw, 3rem); /* Same as vertical padding */
+}
+
+.container--footer {
+    background-color: #ff000080;
+    justify-content: flex-end;
+    align-items: center;
+    height: 5vh;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    display: flex;
+    flex-flow: row;
+    box-shadow: 0 0 20px 16px #0000001a;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header__logo {
+    height: 80%;
+    margin-right: auto;
+}
+
+.header__logo-img {
+    height: 100%;
+}
+
+.header__info {
+    flex-flow: column;
+    flex: 0 auto;
+    justify-content: space-around;
+    align-items: center;
+    height: 80%;
+    display: flex;
+}
+
+.header__title {
+    letter-spacing: .1ch;
+    text-transform: uppercase;
+    margin: 0;
+    font-size: clamp(2rem, 3.5vw, 4rem);
+    line-height: 1.2;
+}
+
+.header__divider {
+    color: #ffffffe6;
+    background-color: #fff;
+    width: 120%;
+    max-width: 100%;
+    height: 2px;
+    position: relative;
+}
+
+.header__subtitle {
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: clamp(1rem, 1.5vw, 1.6rem);
+}
+
+.header__weather {
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50%;
+    margin-left: auto;
+    display: flex;
+}
+
+.header__weather-temp {
+    font-size: clamp(1.5rem, 2.5vw, 3rem);
+    line-height: 1;
+}
+
+.header__weather-icon-wrap {
+    height: 100%;
+}
+
+.header__weather-icon {
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   PRAYERS GRID
+   ======================================== */
+
+.prayers {
+    flex: 1; /* Take remaining space */
+    display: flex;
+    align-items: center;
+}
+
+.prayers__grid {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1.4fr;
+    grid-row-gap: clamp(0.75rem, 1.5vw, 2rem);
+    grid-column-gap: clamp(0.75rem, 1.5vw, 2rem);
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+
+/* When announcements are hidden, center the prayers grid */
+.container--main:has(.announcements.hidden) .prayers {
+    justify-content: center;
+}
+
+/* ========================================
+   CARDS (Prayer & Info)
+   ======================================== */
+
+.card {
+    position: relative;
+    filter: drop-shadow(0 4px 16px #0006);
+    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
+    color: #ffffffe6;
+    background-color: #0c8aa405;
+    background-image: linear-gradient(170deg, #ffffff59, #ffffff40 33%, #ffffff26 67%, #ffffff1a);
+    border: 2px solid #fff3;
+    border-radius: clamp(8px, 1vw, 12px);
+    overflow: hidden;
+}
+
+.card--active {
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+    color: #fff;
+    background-color: #ff00000a;
+    background-image: linear-gradient(170deg, #ffffff73, #fff6 20%, #ffffff4d 65%, #fff3);
+    border-color: #ffffff80;
+}
+
+.card--info {
+    grid-area: span 2 / span 1 / span 2 / span 1;
+    flex-flow: column;
+    justify-content: space-between;
+    display: flex;
+}
+
+.card__content {
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: clamp(0.75rem, 1.5vw, 2rem) clamp(0.5rem, 1vw, 1.5rem);
+    display: flex;
+}
+
+.card__label {
+    text-transform: uppercase;
+    font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+    font-weight: 600;
+}
+
+.card__icon {
+    opacity: .9;
+    height: clamp(4rem, 7vh, 8rem);
+}
+
+.card__icon--gunes {
+    height: clamp(4.2rem, 7.5vh, 8.5rem);
+}
+
+.card__icon--ikindi {
+    height: clamp(3.8rem, 6.5vh, 7.5rem);
+}
+
+.card__icon--yatsi {
+    height: clamp(3.6rem, 6vh, 7rem);
+}
+
+.card__time {
+    text-transform: uppercase;
+    letter-spacing: .2ch;
+    font-size: clamp(1.2rem, 1.8vw, 2rem);
+    font-weight: 600;
+}
+
+/* ========================================
+   INFO CARD (Center)
+   ======================================== */
+
+.info__section {
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: clamp(1rem, 2vw, 3rem);
+    display: flex;
+}
+
+.info__section--lower {
+    grid-column-gap: clamp(1rem, 2vw, 3rem);
+    grid-row-gap: clamp(1rem, 2vw, 3rem);
+    justify-content: center;
+    align-items: center;
+    padding: clamp(0.75rem, 1.5vw, 2rem);
+}
+
+.info__clock {
+    text-align: center;
+    letter-spacing: clamp(6px, 1vw, 12px);
+    font-size: clamp(2rem, 3.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.info__text {
+    color: #fffc;
+    text-align: center;
+    font-size: clamp(1rem, 1.4vw, 1.6rem);
+    font-weight: 600;
+}
+
+.info__divider {
+    color: #ffffffe6;
+    background-color: #fff;
+    width: 80%;
+    height: 2px;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.info__label {
+    color: #fffc;
+    text-align: center;
+    font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+    font-weight: 600;
+}
+
+.info__prayer-name {
+    color: #fffc;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: clamp(1.2rem, 1.8vw, 2.2rem);
+    font-weight: 600;
+}
+
+/* ========================================
+   ANNOUNCEMENTS
+   ======================================== */
+
+.announcements {
+    grid-column-gap: clamp(0.5rem, 1vw, 1.5rem);
+    grid-row-gap: clamp(0.5rem, 1vw, 1.5rem);
+    background-color: #0000004d;
+    flex-flow: column;
+    justify-content: center;
+    align-items: stretch;
+    flex-shrink: 0; /* Don't shrink */
+    min-height: clamp(80px, 12vh, 140px);
+    display: none; /* Hidden by default, JavaScript shows if needed */
+}
+
+.announcements.show {
+    display: flex;
+}
+
+.announcements.hidden {
+    display: none;
+}
+
+.announcements__item {
+    grid-column-gap: clamp(0.75rem, 1.5vw, 2rem);
+    grid-row-gap: clamp(0.75rem, 1.5vw, 2rem);
+    align-items: center;
+    width: 100%;
+    padding-left: clamp(2rem, 4vw, 6rem);
+    padding-right: clamp(2rem, 4vw, 6rem);
+    font-weight: 500;
+    display: flex;
+}
+
+.announcements__item.hidden {
+    display: none;
+}
+
+.announcements__flag-wrap {
+    height: clamp(1.5rem, 2.5vh, 2.5rem);
+}
+
+.announcements__flag {
+    border-radius: clamp(3px, 0.5vw, 6px);
+    height: 100%;
+    width: auto;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+}
+
+.announcements__text {
+    color: #fff;
+    font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+    font-weight: 500;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    margin-bottom: 2px;
+    margin-left: auto;
+    display: flex;
+}
+
+.footer__credit {
+    grid-column-gap: clamp(.2rem, .4vw, .8rem);
+    grid-row-gap: clamp(.2rem, .4vw, .8rem);
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.footer__text {
+    font-size: clamp(1rem, 1.4vw, 1.6rem);
+    line-height: 1;
+}
+
+.footer__logo-wrap {
+    height: 80%;
+    margin-right: auto;
+    height: auto;
+    align-self: auto;
+}
+
+.footer__logo {
+    width: 100%;
+    height: clamp(.8rem, 1vw, 1.4rem);
+    vertical-align: middle;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.hidden {
+    display: none;
+}

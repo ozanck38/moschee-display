@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moschee Display</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="body">
+    <!-- Main Section -->
+    <section class="section">
+        
+        <!-- Header / Top Bar -->
+        <div class="container container--header">
+            <!-- Logo -->
+            <div class="header__logo">
+                <img src="images/ditib-logo.png" loading="lazy" alt="DITIB Logo" class="header__logo-img">
+            </div>
+            
+            <!-- Mosque Info -->
+            <div class="header__info">
+                <h1 class="header__title">
+                    <span id="mosque-name">Aksa Camii</span> - <span id="city-name">Wedel</span>
+                </h1>
+                <div class="header__divider"></div>
+                <div class="header__subtitle">
+                    Türkisch - Islamische Gemeinde zu <span id="city-name-sub">Wedel</span> e.V.
+                </div>
+            </div>
+            
+            <!-- Weather -->
+            <div class="header__weather">
+                <div id="weather-temp" class="header__weather-temp">--°</div>
+                <div class="header__weather-icon-wrap">
+                    <img id="weather-icon" src="" alt="Weather" class="header__weather-icon">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Container -->
+        <div class="container container--main">
+            
+            <!-- Prayer Times Grid -->
+            <div class="prayers">
+                <div class="prayers__grid">
+                    
+                    <!-- İmsak -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">İmsak - Fajr</div>
+                            <img src="images/prayers/imsak.png" alt="Imsak" class="card__icon">
+                            <div id="prayer-imsak" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gunes -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">Güneş - Sunrise</div>
+                            <img src="images/prayers/gunes.png" alt="Güneş" class="card__icon card__icon--gunes">
+                            <div id="prayer-gunes" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ogle -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">Öğle - Dhuhr</div>
+                            <img src="images/prayers/ogle.png" alt="Öğle" class="card__icon">
+                            <div id="prayer-ogle" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Card (Center) -->
+                    <div class="card card--active card--info">
+                        
+                        <!-- Current Time Section -->
+                        <div class="info__section">
+                            <div id="current-time" class="info__clock">--:--:--</div>
+                            <div id="current-day" class="info__text">-- / --</div>
+                            <div id="current-date" class="info__text">--/--/----</div>
+                            <div id="islamic-date" class="info__text">-- ----- ----</div>
+                        </div>
+                        
+                        <div class="info__divider"></div>
+                        
+                        <!-- Next Prayer Section -->
+                        <div class="info__section info__section--lower">
+                            <div class="info__label">Sonraki Vakit / Nächstes Gebet</div>
+                            <div id="next-prayer-timer" class="info__clock">--:--:--</div>
+                            <div id="next-prayer-name" class="info__prayer-name">-- - --</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ikindi -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">İkindi - Asr</div>
+                            <img src="images/prayers/ikindi.png" alt="İkindi" class="card__icon card__icon--ikindi">
+                            <div id="prayer-ikindi" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Aksam -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">Akşam - Maghrib</div>
+                            <img src="images/prayers/aksam.png" alt="Akşam" class="card__icon">
+                            <div id="prayer-aksam" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yatsi -->
+                    <div class="card">
+                        <div class="card__content">
+                            <div class="card__label">Yatsı - Isha</div>
+                            <img src="images/prayers/yatsi.png" alt="Yatsı" class="card__icon card__icon--yatsi">
+                            <div id="prayer-yatsi" class="card__time">--:--</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Announcements -->
+            <div id="announcements" class="card announcements">
+                
+                <!-- Turkish Announcement -->
+                <div id="announcement-tr-wrapper" class="announcements__item">
+                    <div class="announcements__flag-wrap">
+                        <img src="images/flag-turkey.png" alt="Türkiye" class="announcements__flag">
+                    </div>
+                    <strong id="announcement-tr" class="announcements__text">Camimize hoşgeldiniz</strong>
+                </div>
+                
+                <!-- German Announcement -->
+                <div id="announcement-de-wrapper" class="announcements__item">
+                    <div class="announcements__flag-wrap">
+                        <img src="images/flag-germany.png" alt="Deutschland" class="announcements__flag">
+                    </div>
+                    <strong id="announcement-de" class="announcements__text">Herzlich willkommen in unserer Moschee</strong>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Footer -->
+        <div class="container container--footer">
+            <div class="footer">
+                <div class="footer__credit">
+                    <div class="footer__text">designed by</div>
+                    <div class="footer__logo-wrap">
+                        <img src="images/logo.svg" alt="Ozan" class="footer__logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>

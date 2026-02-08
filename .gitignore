@@ -1,0 +1,19 @@
+# Sensitive configuration
+config.json
+
+# API Keys and secrets
+*.key
+*.secret
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
