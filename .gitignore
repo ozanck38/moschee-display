@@ -1,6 +1,3 @@
-# Sensitive configuration
-config.json
-
 # API Keys and secrets
 *.key
 *.secret
