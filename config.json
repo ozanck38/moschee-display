@@ -1,7 +1,16 @@
 {
+  "_comment_mosque_name": "Name der Moschee, der oben im Display angezeigt wird",
   "mosque_name": "Aksa Camii",
+
+  "_comment_city": "Name der Stadt (wird angezeigt und für Wetter genutzt)",
   "city": "Wedel",
+
+  "_comment_city_code": "City Code für Gebetszeiten – siehe README, dort ist erklärt, wo man ihn findet",
   "city_code": "10339",
-  "announcement_turkish": "f",
-  "announcement_german": "f"
+
+  "_comment_announcement_tr": "Türkische Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
+  "announcement_turkish": "",
+
+  "_comment_announcement_de": "Deutsche Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
+  "announcement_german": ""
 }

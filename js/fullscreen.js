@@ -1,4 +1,8 @@
-// Fullscreen helper for Android TV and browsers
+// ===============================================
+// VOLLbild-Helfer
+// Sorgt dafür, dass das Display im Vollbild läuft
+// (TV, Smartboard, Kiosk-Modus)
+// ===============================================
 function enterFullscreen() {
     const elem = document.documentElement;
     
@@ -13,48 +17,67 @@ function enterFullscreen() {
     }
 }
 
-// Keyboard shortcuts for TV remote control
+// ===============================================
+// TASTENSTEUERUNG
+// Unterstützt Tastaturen & TV-Fernbedienungen
+// ===============================================
 document.addEventListener('keydown', (e) => {
-    switch(e.key.toLowerCase()) {
+    switch (e.key.toLowerCase()) {
         case 'r':
         case 'f5':
-            // Reload page
+            // Seite neu laden
             location.reload();
             break;
+
         case 'f':
         case 'f11':
-            // Enter fullscreen
+            // In den Vollbildmodus wechseln
             e.preventDefault();
             enterFullscreen();
             break;
+
         case 'e':
         case 'escape':
-            // Prevent exit from fullscreen
+            // Verhindert das Verlassen des Vollbildmodus
             e.preventDefault();
             enterFullscreen();
             break;
     }
 });
 
-// Try to enter fullscreen on load
+// ===============================================
+// AUTOMATISCHER VOLLbild-START
+// Wird beim Laden der Seite ausgeführt
+// ===============================================
 window.addEventListener('load', () => {
-    // Small delay to ensure page is fully rendered
+    // Kurze Verzögerung, damit alles korrekt geladen ist
     setTimeout(() => {
         enterFullscreen();
     }, 1000);
 });
 
-// Also try on first user interaction (for browsers that require user gesture)
-document.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        enterFullscreen();
-    }
-}, { once: true });
+// ===============================================
+// BENUTZERINTERAKTION
+// Einige Browser erlauben Vollbild erst nach Klick
+// ===============================================
+document.addEventListener(
+    'click',
+    () => {
+        if (!document.fullscreenElement) {
+            enterFullscreen();
+        }
+    },
+    { once: true }
+);
 
-// Prevent accidental exit from fullscreen
+// ===============================================
+// SCHUTZ VOR VOLLbild-VERLUST
+// Versucht automatisch, wieder in den Vollbildmodus
+// zu wechseln
+// ===============================================
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
-        console.log('Exited fullscreen, trying to re-enter...');
+        console.log('Vollbild beendet – versuche erneut zu wechseln');
         setTimeout(enterFullscreen, 500);
     }
 });
