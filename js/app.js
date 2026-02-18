@@ -11,12 +11,12 @@ let dayInfo = null;
 
 // Gebetsnamen (Anzeige TR / EN)
 const PRAYER_NAMES = {
-    imsak: { tr: 'İmsak', en: 'Fajr' },
-    gunes: { tr: 'Güneş', en: 'Sunrise' },
-    ogle: { tr: 'Öğle', en: 'Dhuhr' },
-    ikindi: { tr: 'İkindi', en: 'Asr' },
-    aksam: { tr: 'Akşam', en: 'Maghrib' },
-    yatsi: { tr: 'Yatsı', en: 'Isha' }
+    imsak: { tr: 'İMSAK', en: 'FAJR' },
+    gunes: { tr: 'GÜNEŞ', en: 'SUNRISE' },
+    ogle: { tr: 'ÖĞLE', en: 'DHUHR' },
+    ikindi: { tr: 'İKİNDİ', en: 'ASR' },
+    aksam: { tr: 'AKŞAM', en: 'MAGHRIB' },
+    yatsi: { tr: 'YATSI', en: 'ISHA' }
 };
 
 // Wochentage (TR / DE)
