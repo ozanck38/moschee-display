@@ -12,5 +12,16 @@
   "announcement_turkish": "Ramazan ayımız mübarek olsun!",
 
   "_comment_announcement_de": "Deutsche Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
-  "announcement_german": "Möge unser Ramadan gesegnet sein!"
+  "announcement_german": "Möge unser Ramadan gesegnet sein!",
+
+  "_comment_theme": "Theme-Modus: 'auto' = automatisch anhand Hijri-Datum/Datumsbereich, 'ramadan' = immer Ramadan-Theme, 'default' = immer Standard-Theme",
+  "theme": "ramadan",
+
+  "_comment_ramadan_start": "Ramadan-Startdatum (YYYY-MM-DD) – Optional, wird für die automatische Erkennung und den Tag-Zähler genutzt. Wenn leer, wird das Hijri-Datum aus der API oder eingebaute Daten verwendet.",
+  "ramadan_start": "2026-02-19",
+
+  "_comment_ramadan_end": "Ramadan-Enddatum (YYYY-MM-DD) – Optional",
+  "ramadan_end": "2026-03-19",
+
+  "openweather_api_key": "861c91143f43f7dd773ba4848503a836"
 }

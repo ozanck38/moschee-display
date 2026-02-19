@@ -1,0 +1,533 @@
+/* =====================================================
+   🌙 RAMADAN THEME
+   Visuelles Redesign für den Ramadan
+   
+   PRINZIP: Beibehaltung der Originalgrößen aus style.css.
+   Nur Farben/Hintergrund werden geändert + minimale
+   vh-Caps nur wo nötig (Info-Karte mit Sahur-Countdown).
+   ===================================================== */
+
+/* =====================================================
+   CSS VARIABLEN
+   ===================================================== */
+
+body.theme-ramadan {
+    --rm-deep-night:    #0a1029;
+    --rm-navy:          #0f1a3e;
+    --rm-gold:          #d4a843;
+    --rm-gold-light:    #f0d078;
+    --rm-gold-glow:     #d4a84380;
+    --rm-amber:         #c4912a;
+    --rm-cream:         #fef3d0;
+    --rm-star:          #ffe8a0;
+    --rm-text:          #fef3d0;
+    --rm-text-muted:    rgba(254, 243, 208, 0.75);
+    --rm-card-border:   rgba(212, 168, 67, 0.25);
+    --rm-card-active-border: rgba(212, 168, 67, 0.55);
+}
+
+/* =====================================================
+   HINTERGRUND – STERNENHIMMEL
+   ===================================================== */
+
+body.theme-ramadan .section {
+    background-image:
+        radial-gradient(1.5px 1.5px at 10% 15%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 25% 35%, var(--rm-gold-light) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 40% 8%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.6) 50%, transparent 100%),
+        radial-gradient(2px 2px at 70% 12%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 85% 30%, var(--rm-gold-light) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 15% 60%, rgba(255,255,255,0.4) 50%, transparent 100%),
+        radial-gradient(1px 1px at 90% 55%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 72%, rgba(255,255,255,0.5) 50%, transparent 100%),
+        radial-gradient(1px 1px at 60% 85%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 78% 68%, rgba(255,232,160,0.6) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 48% 45%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 92% 78%, rgba(255,232,160,0.5) 50%, transparent 100%),
+        radial-gradient(ellipse at 20% 80%, rgba(25, 40, 90, 0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(40, 25, 70, 0.4) 0%, transparent 60%),
+        linear-gradient(180deg, var(--rm-deep-night) 0%, var(--rm-navy) 40%, #0d1535 70%, #0a0f28 100%);
+}
+
+/* Twinkle-Overlay */
+body.theme-ramadan .section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at 18% 22%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 42% 18%, rgba(255,232,160,0.7) 50%, transparent 100%),
+        radial-gradient(2px 2px at 65% 5%, var(--rm-star) 50%, transparent 100%),
+        radial-gradient(1px 1px at 82% 42%, rgba(255,255,255,0.5) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 28% 52%, rgba(255,232,160,0.6) 50%, transparent 100%),
+        radial-gradient(1px 1px at 72% 65%, var(--rm-star) 50%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.theme-ramadan .section > * { position: relative; z-index: 1; }
+body.theme-ramadan .section { overflow: hidden; }
+
+@keyframes twinkle { 0% { opacity: 0.3; } 50% { opacity: 0.8; } 100% { opacity: 0.4; } }
+
+/* =====================================================
+   LAYOUT-ANPASSUNG
+   Hauptbereich: flex statt fixer 80vh,
+   damit Banner + Ankündigungen Platz haben
+   ===================================================== */
+
+body.theme-ramadan .container--main {
+    height: auto;
+    flex: 1 1 0;
+    min-height: 0;
+}
+
+/* =====================================================
+   HEADER – NUR FARBÄNDERUNGEN
+   Größen bleiben 1:1 wie im Default
+   ===================================================== */
+
+body.theme-ramadan .container--header {
+    background: rgba(15, 26, 62, 0.88);
+    border-bottom: 2px solid var(--rm-card-border);
+    box-shadow: 0 2px 30px rgba(212, 168, 67, 0.08), 0 0 20px 16px rgba(0,0,0,0.15);
+}
+
+body.theme-ramadan .header__title {
+    color: var(--rm-gold-light);
+    text-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
+}
+
+body.theme-ramadan .header__subtitle {
+    color: var(--rm-text-muted);
+}
+
+body.theme-ramadan .header__divider {
+    background: linear-gradient(90deg, transparent, var(--rm-gold) 20%, var(--rm-gold) 80%, transparent);
+    height: 2px;
+    min-height: 2px;
+    flex-shrink: 0;
+}
+
+body.theme-ramadan .header__weather-temp {
+    color: var(--rm-cream);
+}
+
+/* =====================================================
+   KARTEN – NUR FARBÄNDERUNGEN
+   Größen, Paddings, Spacing bleiben 1:1
+   ===================================================== */
+
+body.theme-ramadan .card {
+    background: linear-gradient(170deg,
+        rgba(212, 168, 67, 0.06) 0%,
+        rgba(15, 22, 50, 0.4) 30%,
+        rgba(15, 22, 50, 0.35) 70%,
+        rgba(212, 168, 67, 0.04) 100%);
+    border: 1.5px solid var(--rm-card-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(212,168,67,0.1);
+}
+
+body.theme-ramadan .card--active {
+    background: linear-gradient(170deg,
+        rgba(212, 168, 67, 0.14) 0%,
+        rgba(212, 168, 67, 0.06) 25%,
+        rgba(15, 26, 62, 0.5) 60%,
+        rgba(212, 168, 67, 0.08) 100%);
+    border-color: var(--rm-card-active-border);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.35), 0 0 25px rgba(212,168,67,0.12), inset 0 1px 0 rgba(212,168,67,0.2);
+}
+
+body.theme-ramadan .card__label {
+    color: var(--rm-gold-light);
+    letter-spacing: 0.12ch;
+}
+
+body.theme-ramadan .card__time {
+    color: var(--rm-cream);
+}
+
+/* =====================================================
+   🕌 SAHUR-KARTE (IMSAK)
+   ===================================================== */
+
+body.theme-ramadan .card--sahur {
+    background: linear-gradient(170deg,
+        rgba(26, 58, 106, 0.45) 0%,
+        rgba(15, 30, 70, 0.5) 40%,
+        rgba(26, 58, 106, 0.35) 100%) !important;
+    border-color: rgba(100, 160, 255, 0.4) !important;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3), 0 0 30px rgba(100,160,255,0.1),
+        inset 0 1px 0 rgba(100,180,255,0.15) !important;
+}
+
+body.theme-ramadan .card--sahur .card__label { color: #a0c8ff; }
+
+body.theme-ramadan .card--sahur .sahur-note {
+    display: block;
+    color: rgba(160, 200, 255, 0.85);
+    font-size: clamp(0.6rem, 0.9vw, 0.9rem);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+    margin-top: 0.2rem;
+}
+
+body.theme-ramadan .card--sahur .sahur-mosque-time {
+    display: block;
+    color: #a0c8ff;
+    font-size: clamp(0.75rem, 1.1vw, 1.05rem);
+    font-weight: 600;
+    margin-top: 0.1rem;
+}
+
+/* =====================================================
+   🌅 IFTAR-KARTE (AKSAM)
+   ===================================================== */
+
+body.theme-ramadan .card--iftar {
+    background: linear-gradient(170deg,
+        rgba(212, 168, 67, 0.2) 0%,
+        rgba(180, 100, 30, 0.15) 30%,
+        rgba(106, 42, 26, 0.3) 70%,
+        rgba(212, 168, 67, 0.1) 100%) !important;
+    border-color: rgba(240, 180, 80, 0.5) !important;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3), 0 0 35px rgba(212,168,67,0.15),
+        inset 0 1px 0 rgba(240,208,120,0.2) !important;
+}
+
+body.theme-ramadan .card--iftar .card__label { color: var(--rm-gold-light); }
+body.theme-ramadan .card--iftar .card__time {
+    color: var(--rm-gold-light);
+    text-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
+}
+
+/* Iftar-Countdown-Badge */
+.iftar-countdown-badge { display: none; }
+
+body.theme-ramadan .iftar-countdown-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(180,120,30,0.15));
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: clamp(4px, 0.5vw, 6px);
+    padding: 0.15rem 0.5rem;
+    margin-top: 0.2rem;
+}
+
+.iftar-countdown-badge__icon { font-size: clamp(0.7rem, 0.9vw, 0.9rem); }
+.iftar-countdown-badge__time {
+    color: var(--rm-gold-light);
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1ch;
+}
+
+/* =====================================================
+   INFO-KARTE – FARBEN + LEICHT KOMPAKTERE GAPS
+   (Hier muss Platz für Sahur-Countdown sein)
+   ===================================================== */
+
+body.theme-ramadan .card--info {
+    border-color: rgba(212, 168, 67, 0.4);
+}
+
+body.theme-ramadan .info__clock {
+    color: var(--rm-gold-light);
+    text-shadow: 0 0 15px rgba(212, 168, 67, 0.25);
+}
+
+body.theme-ramadan .info__text {
+    color: var(--rm-text-muted);
+}
+
+body.theme-ramadan .info__divider {
+    background: linear-gradient(90deg, transparent, var(--rm-gold) 30%, var(--rm-gold) 70%, transparent);
+    height: 2px;
+    min-height: 2px;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+body.theme-ramadan .info__label {
+    color: var(--rm-text-muted);
+}
+
+body.theme-ramadan .info__prayer-name {
+    color: var(--rm-gold-light);
+}
+
+/* Info-Karte: leicht kompaktere Gaps um Sahur reinzubekommen */
+body.theme-ramadan .info__section {
+    padding: clamp(0.5rem, 1.2vw, 1.8rem);
+}
+
+body.theme-ramadan .info__section--lower {
+    gap: clamp(0.4rem, 1vw, 1.5rem);
+    padding: clamp(0.4rem, 1vw, 1.5rem);
+}
+
+body.theme-ramadan .info__clock--urgent {
+    color: var(--rm-gold-light) !important;
+    animation: ramadan-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ramadan-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); text-shadow: 0 0 15px rgba(212,168,67,0.3); }
+    50%      { opacity: 0.7; transform: scale(1.05); text-shadow: 0 0 30px rgba(212,168,67,0.6); }
+}
+
+/* =====================================================
+   SAHUR COUNTDOWN (in der Info-Karte, nur nachts)
+   ===================================================== */
+
+.sahur-countdown-section { display: none; }
+
+body.theme-ramadan .sahur-countdown-section.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+}
+
+.sahur-countdown-section__label {
+    color: rgba(160, 200, 255, 0.85);
+    font-size: clamp(0.65rem, 0.9vw, 0.95rem);
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.sahur-countdown-section__time {
+    color: #a0c8ff;
+    font-size: min(clamp(1.1rem, 1.8vw, 2rem), 3.5vh);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12ch;
+    text-shadow: 0 0 12px rgba(100, 160, 255, 0.3);
+    line-height: 1;
+}
+
+/* =====================================================
+   🌙 RAMADAN MÜBAREK BANNER
+   ===================================================== */
+
+.ramadan-banner { display: none; }
+
+body.theme-ramadan .ramadan-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.6rem, 1.2vw, 1.5rem);
+    padding: clamp(0.35rem, 0.7vh, 0.6rem) clamp(1rem, 2vw, 3rem);
+    background: linear-gradient(135deg,
+        rgba(212,168,67,0.12) 0%,
+        rgba(15,26,62,0.5) 50%,
+        rgba(212,168,67,0.08) 100%);
+    border: 1px solid rgba(212,168,67,0.25);
+    border-radius: clamp(6px, 0.8vw, 10px);
+    flex-shrink: 0;
+}
+
+.ramadan-banner__lantern {
+    font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+    animation: lantern-sway 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(212,168,67,0.5));
+}
+.ramadan-banner__lantern:nth-child(3) { animation-delay: -1.5s; }
+
+@keyframes lantern-sway {
+    0%, 100% { transform: rotate(-3deg) translateY(0); }
+    50%      { transform: rotate(3deg) translateY(-2px); }
+}
+
+.ramadan-banner__text { text-align: center; }
+
+.ramadan-banner__title {
+    color: var(--rm-gold-light);
+    font-size: clamp(1.1rem, 1.8vw, 2rem);
+    font-weight: 700;
+    letter-spacing: 0.2ch;
+    text-shadow: 0 0 20px rgba(212,168,67,0.3);
+    line-height: 1.2;
+}
+
+.ramadan-banner__subtitle {
+    color: var(--rm-text-muted);
+    font-size: clamp(0.7rem, 1vw, 1.1rem);
+    font-weight: 500;
+    letter-spacing: 0.1ch;
+}
+
+/* =====================================================
+   ANKÜNDIGUNGEN – NUR FARBEN
+   ===================================================== */
+
+body.theme-ramadan .announcements {
+    background: linear-gradient(135deg, rgba(15,22,50,0.5) 0%, rgba(212,168,67,0.06) 100%);
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: clamp(6px, 0.8vw, 10px);
+}
+
+body.theme-ramadan .announcements__text {
+    color: var(--rm-cream);
+}
+
+/* =====================================================
+   FOOTER – NUR FARBEN + LAYOUT-FIX
+   ===================================================== */
+
+body.theme-ramadan .container--footer {
+    background: rgba(30, 20, 10, 0.75);
+    border-top: 1px solid rgba(212,168,67,0.15);
+    box-shadow: 0 -2px 20px rgba(0,0,0,0.2);
+}
+
+body.theme-ramadan .footer {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+body.theme-ramadan .footer__text {
+    color: var(--rm-text-muted);
+}
+
+/* =====================================================
+   📅 RAMADAN-TAG-ZÄHLER (FOOTER LINKS)
+   ===================================================== */
+
+.ramadan-day-counter { display: none; }
+
+body.theme-ramadan .ramadan-day-counter {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.3rem, 0.5vw, 0.6rem);
+}
+
+.ramadan-day-counter__icon {
+    font-size: clamp(1rem, 1.4vw, 1.5rem);
+    filter: drop-shadow(0 0 4px rgba(212,168,67,0.4));
+}
+
+.ramadan-day-counter__text {
+    color: var(--rm-gold-light);
+    font-size: clamp(0.9rem, 1.3vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: 0.1ch;
+    line-height: 1;
+}
+
+.ramadan-day-counter__label {
+    color: var(--rm-text-muted);
+    font-size: clamp(0.65rem, 0.85vw, 0.9rem);
+    font-weight: 500;
+    line-height: 1;
+}
+
+/* =====================================================
+   GOLDLINIE UNTER HEADER + LATERNEN
+   ===================================================== */
+
+body.theme-ramadan .section::after {
+    content: '';
+    position: absolute;
+    top: 12vh;
+    left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent 0%, rgba(212,168,67,0.15) 10%, rgba(212,168,67,0.3) 25%,
+        rgba(212,168,67,0.15) 40%, transparent 50%, rgba(212,168,67,0.15) 60%,
+        rgba(212,168,67,0.3) 75%, rgba(212,168,67,0.15) 90%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.ramadan-lanterns { display: none; }
+
+body.theme-ramadan .ramadan-lanterns {
+    display: block;
+    position: absolute;
+    top: 12vh;
+    left: 0; right: 0;
+    height: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.ramadan-lantern-svg {
+    position: absolute;
+    top: 0;
+    filter: drop-shadow(0 4px 12px rgba(212,168,67,0.35));
+}
+
+.ramadan-lantern-svg--left-1  { left: 3%;   width: clamp(26px, 2.6vw, 45px); animation: lantern-hang 4s ease-in-out infinite; }
+.ramadan-lantern-svg--left-2  { left: 7.5%; width: clamp(20px, 2vw, 35px);   animation: lantern-hang 4.5s ease-in-out infinite; animation-delay: -1s; }
+.ramadan-lantern-svg--right-1 { right: 3%;  width: clamp(26px, 2.6vw, 45px); animation: lantern-hang 4.2s ease-in-out infinite; animation-delay: -2s; }
+.ramadan-lantern-svg--right-2 { right: 7.5%;width: clamp(20px, 2vw, 35px);   animation: lantern-hang 3.8s ease-in-out infinite; animation-delay: -0.5s; }
+
+@keyframes lantern-hang { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+
+/* =====================================================
+   GLOW ORBS
+   ===================================================== */
+
+.ramadan-glow-orbs { display: none; }
+
+body.theme-ramadan .ramadan-glow-orbs {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ramadan-glow-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; }
+.ramadan-glow-orb--1 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(212,168,67,0.5), transparent 70%); top: 20%; left: -5%; animation: orb-drift 12s ease-in-out infinite alternate; }
+.ramadan-glow-orb--2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(100,160,255,0.4), transparent 70%); bottom: 10%; right: -3%; animation: orb-drift 15s ease-in-out infinite alternate-reverse; }
+.ramadan-glow-orb--3 { width: 250px; height: 250px; background: radial-gradient(circle, rgba(212,168,67,0.3), transparent 70%); top: 50%; left: 40%; animation: orb-drift 10s ease-in-out infinite alternate; animation-delay: -5s; }
+
+@keyframes orb-drift { 0% { transform: translate(0,0); } 100% { transform: translate(30px,-20px); } }
+
+/* =====================================================
+   FEHLER-TOAST
+   ===================================================== */
+
+body.theme-ramadan .error-toast {
+    background: linear-gradient(135deg, #a03020, #802018);
+    border-color: rgba(212,168,67,0.3);
+}
+
+/* =====================================================
+   THEME SWITCH KNOPF
+   ===================================================== */
+
+.theme-switch {
+    position: fixed;
+    bottom: clamp(0.5rem, 1vh, 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    color: rgba(255,255,255,0.7);
+    font-family: Montserrat, sans-serif;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.theme-switch:hover { opacity: 1; background: rgba(0,0,0,0.8); border-color: rgba(255,255,255,0.4); }
+.theme-switch:focus { opacity: 1; outline: none; }

@@ -57,6 +57,11 @@ async function init() {
         startClocks();
         setupAutoRefresh();
 
+        // 🌙 Ramadan-Modul initialisieren (nach Gebetszeiten)
+        if (typeof RamadanModule !== 'undefined') {
+            RamadanModule.init(config, prayerTimes, dayInfo);
+        }
+
         console.log('✅ Initialization complete');
     } catch (error) {
         console.error('❌ Initialization error:', error);
