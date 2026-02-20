@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" width="50" height="100">
+  <defs>
+    <linearGradient id="goldCap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F6E3A6" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#D6B45A" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#B8892C" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD76A" stop-opacity="0.13"/>
+      <stop offset="45%" stop-color="#FFD76A" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0.11"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="50%" cy="52%" r="60%">
+      <stop offset="0%" stop-color="#FFE7A6" stop-opacity="0.36"/>
+      <stop offset="45%" stop-color="#FFD76A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="shadow" x="-40%" y="-30%" width="180%" height="190%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.16"/>
+    </filter>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.1" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.32 0" />
+    </filter>
+
+    <linearGradient id="highlight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <!-- Chain -->
+    <line x1="25" y1="0" x2="25" y2="18" stroke="#D6B45A" stroke-width="1.05" opacity="0.65"/>
+    <circle cx="25" cy="9" r="1.9" fill="none" stroke="#D6B45A" stroke-width="0.9" opacity="0.85"/>
+
+    <!-- Top cap -->
+    <path d="M17 20 Q25 15 33 20 L31.7 25 Q25 22.2 18.3 25 Z"
+          fill="url(#goldCap)"/>
+
+    <!-- Top ring -->
+    <ellipse cx="25" cy="27" rx="9.4" ry="2.2" fill="url(#goldCap)" opacity="0.98"/>
+
+    <!-- Glass body -->
+    <path d="M16 27
+             Q12.6 46 14.0 68
+             Q19.0 80 25 83
+             Q31.0 80 36.0 68
+             Q37.4 46 34.0 27"
+          fill="url(#glass)"
+          stroke="#C9A34A"
+          stroke-width="0.9"
+          opacity="0.95"/>
+
+    <!-- Glow -->
+    <ellipse cx="25" cy="56" rx="10.2" ry="20.5" fill="url(#glow)" filter="url(#softGlow)"/>
+    <ellipse cx="25" cy="56" rx="7.2" ry="14.8" fill="url(#glow)" opacity="0.9"/>
+
+    <!-- Ribs -->
+    <path d="M20.5 28.5 Q18.2 51 19.8 73" fill="none" stroke="#C9A34A" stroke-width="0.65" opacity="0.22"/>
+    <path d="M25 27 Q24.7 51 25 78" fill="none" stroke="#C9A34A" stroke-width="0.65" opacity="0.22"/>
+    <path d="M29.5 28.5 Q31.8 51 30.2 73" fill="none" stroke="#C9A34A" stroke-width="0.65" opacity="0.22"/>
+
+    <!-- Minimal band -->
+    <path d="M16.8 49.5 Q20.8 47 25 49.5 Q29.2 52 33.2 49.5"
+          fill="none" stroke="#F1D58B" stroke-width="0.85" opacity="0.42"/>
+    <path d="M16.8 53 Q20.8 55.5 25 53 Q29.2 50.5 33.2 53"
+          fill="none" stroke="#F1D58B" stroke-width="0.85" opacity="0.32"/>
+
+    <!-- Highlight -->
+    <path d="M19 31
+             Q16.6 50 17.6 70
+             Q19.2 76 21.6 79"
+          fill="none" stroke="url(#highlight)" stroke-width="2" opacity="0.75" stroke-linecap="round"/>
+
+    <!-- Bottom ring -->
+    <ellipse cx="25" cy="81.5" rx="8.9" ry="2.2" fill="url(#goldCap)" opacity="0.98"/>
+
+    <!-- Bottom cap -->
+    <path d="M18.2 81.5 Q25 87 31.8 81.5 L29.7 93 Q25 95.7 20.3 93 Z"
+          fill="url(#goldCap)"/>
+
+    <!-- Finial -->
+    <path d="M22.7 93 L25 100 L27.3 93" fill="#D6B45A" opacity="0.9"/>
+  </g>
+</svg>

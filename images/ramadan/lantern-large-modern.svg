@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 120" width="60" height="120">
+  <defs>
+    <!-- Soft metallic gold -->
+    <linearGradient id="goldCap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F6E3A6" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#D6B45A" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#B8892C" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Glass tint -->
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD76A" stop-opacity="0.14"/>
+      <stop offset="45%" stop-color="#FFD76A" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0.12"/>
+    </linearGradient>
+
+    <!-- Inner warm glow -->
+    <radialGradient id="glow" cx="50%" cy="52%" r="60%">
+      <stop offset="0%" stop-color="#FFE7A6" stop-opacity="0.40"/>
+      <stop offset="45%" stop-color="#FFD76A" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0.00"/>
+    </radialGradient>
+
+    <!-- Subtle drop shadow -->
+    <filter id="shadow" x="-40%" y="-30%" width="180%" height="190%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+
+    <!-- Soft glow blur -->
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" />
+    </filter>
+
+    <!-- Gentle highlight line -->
+    <linearGradient id="highlight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- GROUP -->
+  <g filter="url(#shadow)">
+    <!-- Chain -->
+    <line x1="30" y1="0" x2="30" y2="22" stroke="#D6B45A" stroke-width="1.2" opacity="0.7"/>
+    <circle cx="30" cy="11" r="2.2" fill="none" stroke="#D6B45A" stroke-width="1" opacity="0.85"/>
+
+    <!-- Top cap -->
+    <path d="M20 24 Q30 18 40 24 L38.5 30 Q30 26.5 21.5 30 Z"
+          fill="url(#goldCap)"/>
+
+    <!-- Top ring -->
+    <ellipse cx="30" cy="32" rx="11.2" ry="2.6" fill="url(#goldCap)" opacity="0.98"/>
+
+    <!-- Glass body outline -->
+    <path d="M18.5 32
+             Q14.2 55 16.0 82
+             Q22.0 97 30 101
+             Q38.0 97 44.0 82
+             Q45.8 55 41.5 32"
+          fill="url(#glass)"
+          stroke="#C9A34A"
+          stroke-width="1"
+          opacity="0.95"/>
+
+    <!-- Inner glow (blurred + normal) -->
+    <ellipse cx="30" cy="68" rx="13" ry="26" fill="url(#glow)" filter="url(#softGlow)"/>
+    <ellipse cx="30" cy="68" rx="9" ry="18" fill="url(#glow)" opacity="0.9"/>
+
+    <!-- Modern ribs (very subtle) -->
+    <path d="M24.8 34 Q21.3 60 23.7 90" fill="none" stroke="#C9A34A" stroke-width="0.7" opacity="0.25"/>
+    <path d="M30.0 32 Q29.6 60 30.0 95" fill="none" stroke="#C9A34A" stroke-width="0.7" opacity="0.25"/>
+    <path d="M35.2 34 Q38.7 60 36.3 90" fill="none" stroke="#C9A34A" stroke-width="0.7" opacity="0.25"/>
+
+    <!-- Tiny arabesque band (clean, minimal) -->
+    <path d="M19.5 60 Q24.5 56.8 30 60 Q35.5 63.2 40.5 60"
+          fill="none" stroke="#F1D58B" stroke-width="0.9" opacity="0.45"/>
+    <path d="M19.5 64 Q24.5 67.2 30 64 Q35.5 60.8 40.5 64"
+          fill="none" stroke="#F1D58B" stroke-width="0.9" opacity="0.35"/>
+
+    <!-- Highlight strip on glass -->
+    <path d="M22.2 36
+             Q18.8 58 20.0 84
+             Q22.5 92 26.0 96"
+          fill="none" stroke="url(#highlight)" stroke-width="2.2" opacity="0.75" stroke-linecap="round"/>
+
+    <!-- Bottom ring -->
+    <ellipse cx="30" cy="98" rx="10.5" ry="2.6" fill="url(#goldCap)" opacity="0.98"/>
+
+    <!-- Bottom cap -->
+    <path d="M21 98 Q30 105 39 98 L36.3 112 Q30 115.5 23.7 112 Z"
+          fill="url(#goldCap)"/>
+
+    <!-- Finial -->
+    <path d="M27 112 L30 120 L33 112" fill="#D6B45A" opacity="0.9"/>
+  </g>
+</svg>

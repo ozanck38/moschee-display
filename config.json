@@ -9,8 +9,12 @@
   "city_code": "10339",
 
   "_comment_announcement_tr": "Türkische Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
-  "announcement_turkish": "Ramazan ayımız mübarek olsun!",
+  "announcement_turkish": "23.02: Osmanlı geleneği ile enderun usulü teravih namazı ve sohbet programı - Türkiye den misafir hocalar ile",
 
   "_comment_announcement_de": "Deutsche Ankündigung unten im Display (leer lassen, wenn nicht gewünscht)",
-  "announcement_german": "Möge unser Ramadan gesegnet sein!"
+  "announcement_german": "23.02: Teravih-Gebet nach Osmanischer \"Enderun\"-Tradition - Mit Gastimamem aus der Türkei",
+
+"theme": "auto",
+
+  "openCOMweather_api_key": "861c91143f43f7dd773ba4848503a836"
 }

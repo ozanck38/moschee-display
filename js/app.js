@@ -1,53 +1,45 @@
-// ===========================
-// KONFIGURATION & STATUS
-// ===========================
+/**
+ * ═══════════════════════════════════════════════════════════
+ * MOSCHEE-DISPLAY – HAUPTLOGIK v4
+ * ═══════════════════════════════════════════════════════════
+ */
 
 let config = {};
 let prayerTimes = {};
 let nextPrayerInfo = null;
-
-// Tagesdaten aus der Gebetszeiten-API (z.B. Hijri-Datum)
 let dayInfo = null;
 
-// Gebetsnamen (Anzeige TR / EN)
 const PRAYER_NAMES = {
-    imsak: { tr: 'İMSAK', en: 'FAJR' },
-    gunes: { tr: 'GÜNEŞ', en: 'SUNRISE' },
-    ogle: { tr: 'ÖĞLE', en: 'DHUHR' },
-    ikindi: { tr: 'İKİNDİ', en: 'ASR' },
-    aksam: { tr: 'AKŞAM', en: 'MAGHRIB' },
-    yatsi: { tr: 'YATSI', en: 'ISHA' }
+    imsak: { tr: 'İMSAK', en: 'FAJR' }, gunes: { tr: 'GÜNEŞ', en: 'SUNRISE' },
+    ogle: { tr: 'ÖĞLE', en: 'DHUHR' }, ikindi: { tr: 'İKİNDİ', en: 'ASR' },
+    aksam: { tr: 'AKŞAM', en: 'MAGHRIB' }, yatsi: { tr: 'YATSI', en: 'ISHA' }
 };
 
-// Wochentage (TR / DE)
 const DAY_NAMES = {
-    tr: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
-    de: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+    tr: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+    de: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag']
 };
 
-// ===========================
-// FEHLERHINWEIS (TOAST)
-// ===========================
+const PRAYER_ORDER = ['imsak','gunes','ogle','ikindi','aksam','yatsi'];
 
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-toast';
-    errorDiv.textContent = message;
-    document.body.appendChild(errorDiv);
-
-    // Meldung nach 5 Sekunden entfernen
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
+/** Zentrale Zeit – nutzt Debug-Overrides wenn vorhanden */
+function now() {
+    return (typeof RamadanModule !== 'undefined' && RamadanModule.getNow)
+        ? RamadanModule.getNow()
+        : new Date();
 }
 
-// ===========================
-// START / INITIALISIERUNG
-// ===========================
+function showError(msg) {
+    const el = document.createElement('div');
+    el.className = 'error-toast';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 5000);
+}
 
+// ── Init ───────────────────────────────────────────────
 async function init() {
-    console.log('🕌 Mosque Display initializing...');
-
+    console.log('[Display] Init...');
     try {
         await loadConfig();
         updateMosqueInfo();
@@ -57,470 +49,187 @@ async function init() {
         startClocks();
         setupAutoRefresh();
 
-        console.log('✅ Initialization complete');
-    } catch (error) {
-        console.error('❌ Initialization error:', error);
-    }
+        if (typeof RamadanModule !== 'undefined') {
+            RamadanModule.init(config, prayerTimes, dayInfo);
+        }
+        console.log('[Display] Fertig');
+    } catch (e) { console.error('[Display]', e); }
 }
 
-// ===========================
-// KONFIG LADEN
-// ===========================
-
+// ── Config ─────────────────────────────────────────────
 async function loadConfig() {
     try {
-        // 1) Wenn vorhanden: config.js (window.MOSQUE_CONFIG)
-        if (window.MOSQUE_CONFIG) {
-            config = window.MOSQUE_CONFIG;
-            console.log('✅ Config loaded from config.js:', config);
-            return;
-        }
-
-        // 2) Fallback: config.json (mit Cache-Buster)
-        const timestamp = new Date().getTime();
-        const response = await fetch(`config.json?v=${timestamp}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            const text = await response.text();
-            config = JSON.parse(text);
-        } else {
-            config = await response.json();
-        }
-
-        console.log('✅ Config loaded from config.json:', config);
-    } catch (error) {
-        console.error('❌ Config loading failed:', error);
-
-        // Notfall-Konfig (damit das Display trotzdem startet)
-        config = {
-            mosque_name: 'Aksa Camii',
-            city: 'Wedel',
-            city_code: '10339',
-            announcement_turkish: 'Camimize hoşgeldiniz',
-            announcement_german: 'Herzlich willkommen in unserer Moschee',
-            openweather_api_key: 'YOUR_API_KEY_HERE'
-        };
-
-        console.log('ℹ️ Using fallback config');
+        if (window.MOSQUE_CONFIG) { config = window.MOSQUE_CONFIG; return; }
+        const res = await fetch(`config.json?v=${Date.now()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const ct = res.headers.get('content-type');
+        config = ct?.includes('application/json') ? await res.json() : JSON.parse(await res.text());
+    } catch (e) {
+        console.error('[Config]', e);
+        config = { mosque_name:'Aksa Camii', city:'Wedel', city_code:'10339',
+            announcement_turkish:'', announcement_german:'', openweather_api_key:'' };
     }
 }
 
-// ===========================
-// MOSCHEE-INFOS IN UI SETZEN
-// ===========================
-
 function updateMosqueInfo() {
-    document.getElementById('mosque-name').textContent = config.mosque_name;
-    document.getElementById('city-name').textContent = config.city;
-    document.getElementById('city-name-sub').textContent = config.city;
+    const s = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+    s('mosque-name', config.mosque_name); s('city-name', config.city); s('city-name-sub', config.city);
 }
 
-// ===========================
-// GEBETSZEITEN LADEN
-// ===========================
-
+// ── Gebetszeiten ───────────────────────────────────────
 async function loadPrayerTimes() {
     try {
-        const today = new Date();
-        const cityCode = config.city_code || '10339';
-        const url = `https://ezanvakti.emushaf.net/vakitler/${cityCode}`;
+        const res = await fetch(`https://ezanvakti.emushaf.net/vakitler/${config.city_code}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data) || !data.length) throw new Error('Keine Daten');
 
-        console.log('📡 Fetching prayer times from:', url);
+        const today = now();
+        const str = `${String(today.getDate()).padStart(2,'0')}.${String(today.getMonth()+1).padStart(2,'0')}.${today.getFullYear()}`;
+        const d = data.find(x => x.MiladiTarihKisaIso8601 === str) || data[0];
 
-        const response = await fetch(url);
+        dayInfo = { hijriLong: d.HicriTarihUzun||'', hijriShort: d.HicriTarihKisa||'', miladiShort: d.MiladiTarihKisaIso8601||'' };
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
+        ['Imsak','Gunes','Ogle','Ikindi','Aksam','Yatsi'].forEach(f => { if (!d[f]) throw new Error(`Fehlt: ${f}`); });
 
-        const data = await response.json();
-
-        if (!data || !Array.isArray(data) || data.length === 0) {
-            throw new Error('Invalid prayer times data received');
-        }
-
-        // Tagesdatensatz auswählen (Format: "DD.MM.YYYY")
-        const todayStr = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
-        const todayData = data.find(d => d.MiladiTarihKisaIso8601 === todayStr);
-
-        if (!todayData) {
-            console.warn('⚠️ Could not find prayer times for today:', todayStr);
-            console.log('📅 Using first available date:', data[0].MiladiTarihKisaIso8601);
-        }
-
-        const selectedData = todayData || data[0];
-
-        // Tagesinfos (z.B. Hijri-Datum) direkt aus der API nutzen
-        dayInfo = {
-            hijriLong: selectedData.HicriTarihUzun || '',
-            hijriShort: selectedData.HicriTarihKisa || '',
-            miladiShort: selectedData.MiladiTarihKisaIso8601 || ''
-        };
-
-        // Pflichtfelder prüfen
-        const requiredFields = ['Imsak', 'Gunes', 'Ogle', 'Ikindi', 'Aksam', 'Yatsi'];
-        const missingFields = requiredFields.filter(field => !selectedData[field]);
-
-        if (missingFields.length > 0) {
-            throw new Error(`Missing prayer times: ${missingFields.join(', ')}`);
-        }
-
-        prayerTimes = {
-            imsak: selectedData.Imsak,
-            gunes: selectedData.Gunes,
-            ogle: selectedData.Ogle,
-            ikindi: selectedData.Ikindi,
-            aksam: selectedData.Aksam,
-            yatsi: selectedData.Yatsi
-        };
-
+        prayerTimes = { imsak:d.Imsak, gunes:d.Gunes, ogle:d.Ogle, ikindi:d.Ikindi, aksam:d.Aksam, yatsi:d.Yatsi };
         updatePrayerTimesDisplay();
-        console.log('✅ Prayer times loaded:', prayerTimes);
-
-    } catch (error) {
-        console.error('❌ Prayer times loading failed:', error.message);
-
-        // Passende Meldung anzeigen
-        let errorMessage = '⚠️ Gebetszeiten konnten nicht geladen werden';
-
-        if (error.message.includes('HTTP')) {
-            errorMessage = '⚠️ Gebetszeiten-Server nicht erreichbar';
-        } else if (error.message.includes('Invalid')) {
-            errorMessage = '⚠️ Ungültige Gebetszeiten-Daten';
-        }
-
-        showError(errorMessage);
-
-        // Platzhalter-Zeiten
-        prayerTimes = {
-            imsak: '05:30',
-            gunes: '07:15',
-            ogle: '12:30',
-            ikindi: '15:00',
-            aksam: '17:45',
-            yatsi: '19:30'
-        };
-
+        console.log('[Gebetszeiten]', prayerTimes);
+    } catch (e) {
+        console.error('[Gebetszeiten]', e.message);
+        showError('Gebetszeiten konnten nicht geladen werden');
+        prayerTimes = { imsak:'05:30', gunes:'07:15', ogle:'12:30', ikindi:'15:00', aksam:'17:45', yatsi:'19:30' };
         dayInfo = null;
         updatePrayerTimesDisplay();
     }
 }
 
 function updatePrayerTimesDisplay() {
-    Object.keys(prayerTimes).forEach(prayer => {
-        const element = document.getElementById(`prayer-${prayer}`);
-        if (element) {
-            element.textContent = prayerTimes[prayer];
-        }
-    });
+    PRAYER_ORDER.forEach(p => { const el = document.getElementById(`prayer-${p}`); if (el) el.textContent = prayerTimes[p]; });
+    updateIslamicDate();
+    calcNextPrayer();
+}
 
-    // Hijri-Datum anzeigen (kommt aus der Gebetszeiten-API)
+// ── Nächstes Gebet ─────────────────────────────────────
+
+/** Berechnet welches Gebet als nächstes kommt */
+function calcNextPrayer() {
+    const n = now();
+    const cur = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
+    const ps = {};
+    PRAYER_ORDER.forEach(p => { const [h,m] = prayerTimes[p].split(':').map(Number); ps[p] = h*3600+m*60; });
+
+    let next = null, min = Infinity;
+    PRAYER_ORDER.forEach(p => { let d = ps[p]-cur; if (d<0) d+=86400; if (d<min) { min=d; next=p; } });
+
+    nextPrayerInfo = { name: next, targetSec: ps[next] };
+
+    const el = document.getElementById('next-prayer-name');
+    const pn = PRAYER_NAMES[next];
+    if (el && pn) el.textContent = `${pn.tr} - ${pn.en}`;
+    highlightCurrentPrayer(next);
+}
+
+/**
+ * SYNCHRONER TICK: Uhr + Countdown werden im selben Moment berechnet
+ * aus der aktuellen Zeit. Kein separater Counter der driften kann.
+ */
+function tick() {
+    const n = now();
+    const pad = v => String(v).padStart(2, '0');
+
+    // ── Uhr ──
+    document.getElementById('current-time').textContent =
+        `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
+
+    const di = n.getDay();
+    document.getElementById('current-day').textContent = `${DAY_NAMES.tr[di]} / ${DAY_NAMES.de[di]}`;
+    document.getElementById('current-date').textContent = `${pad(n.getDate())}/${pad(n.getMonth()+1)}/${n.getFullYear()}`;
+
     updateIslamicDate();
 
-    updateNextPrayer();
-}
+    // ── Countdown ──
+    if (nextPrayerInfo) {
+        const curSec = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
+        let diff = nextPrayerInfo.targetSec - curSec;
+        if (diff < 0) diff += 86400;
 
-// ===========================
-// NÄCHSTES GEBET BERECHNEN
-// ===========================
+        // Bei 0 → nächstes Gebet neu berechnen
+        if (diff <= 0 || diff > 86399) { calcNextPrayer(); return; }
 
-function updateNextPrayer() {
-    const now = new Date();
-    const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-
-    // Gebetszeiten -> Sekunden
-    const prayerSeconds = {};
-    Object.keys(prayerTimes).forEach(prayer => {
-        const [hours, minutes] = prayerTimes[prayer].split(':').map(Number);
-        prayerSeconds[prayer] = hours * 3600 + minutes * 60;
-    });
-
-    // Nächstes Gebet finden
-    let nextPrayer = null;
-    let minDiff = Infinity;
-
-    Object.keys(prayerSeconds).forEach(prayer => {
-        let diff = prayerSeconds[prayer] - currentSeconds;
-
-        // Wenn schon vorbei: zählt für morgen
-        if (diff < 0) diff += 24 * 3600;
-
-        if (diff < minDiff) {
-            minDiff = diff;
-            nextPrayer = prayer;
+        const h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
+        const el = document.getElementById('next-prayer-timer');
+        if (el) {
+            el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+            el.classList.toggle('info__clock--urgent', diff < 300);
         }
-    });
-
-    nextPrayerInfo = {
-        name: nextPrayer,
-        secondsUntil: minDiff
-    };
-
-    updateNextPrayerDisplay();
-    highlightCurrentPrayer(nextPrayer);
-}
-
-function updateNextPrayerDisplay() {
-    if (!nextPrayerInfo) return;
-
-    const nameElement = document.getElementById('next-prayer-name');
-    const prayerName = PRAYER_NAMES[nextPrayerInfo.name];
-    nameElement.textContent = `${prayerName.tr} - ${prayerName.en}`;
-}
-
-function updateNextPrayerTimer() {
-    if (!nextPrayerInfo) return;
-
-    const timerElement = document.getElementById('next-prayer-timer');
-
-    const hours = Math.floor(nextPrayerInfo.secondsUntil / 3600);
-    const minutes = Math.floor((nextPrayerInfo.secondsUntil % 3600) / 60);
-    const seconds = Math.floor(nextPrayerInfo.secondsUntil % 60);
-
-    timerElement.textContent =
-        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-    // Warn-Optik bei weniger als 5 Minuten
-    if (nextPrayerInfo.secondsUntil < 300) {
-        timerElement.classList.add('info__clock--urgent');
-    } else {
-        timerElement.classList.remove('info__clock--urgent');
-    }
-
-    // Countdown runterzählen
-    nextPrayerInfo.secondsUntil -= 1;
-
-    if (nextPrayerInfo.secondsUntil <= 0) {
-        updateNextPrayer();
     }
 }
 
-function highlightCurrentPrayer(nextPrayer) {
-    // Alle Hervorhebungen entfernen
-    document.querySelectorAll('.card').forEach(card => {
-        card.classList.remove('card--active');
-    });
-
-    // Aktuell ist die Karte VOR dem nächsten Gebet
-    const prayerOrder = ['imsak', 'gunes', 'ogle', 'ikindi', 'aksam', 'yatsi'];
-    const nextIndex = prayerOrder.indexOf(nextPrayer);
-    const currentIndex = nextIndex > 0 ? nextIndex - 1 : prayerOrder.length - 1;
-    const currentPrayer = prayerOrder[currentIndex];
-
-    const currentCard = document.getElementById(`prayer-${currentPrayer}`)?.closest('.card');
-    if (currentCard) currentCard.classList.add('card--active');
-
-    // Info-Karte bleibt immer aktiv
-    const infoCard = document.querySelector('.card--info');
-    if (infoCard) infoCard.classList.add('card--active');
+function highlightCurrentPrayer(next) {
+    document.querySelectorAll('.card[data-prayer]').forEach(c => c.classList.remove('card--active'));
+    const i = PRAYER_ORDER.indexOf(next);
+    const ci = i > 0 ? i-1 : PRAYER_ORDER.length-1;
+    const c = document.querySelector(`[data-prayer="${PRAYER_ORDER[ci]}"]`);
+    if (c) c.classList.add('card--active');
+    const info = document.querySelector('.card--info');
+    if (info) info.classList.add('card--active');
 }
 
-// ===========================
-// WETTER LADEN
-// ===========================
-
+// ── Wetter ─────────────────────────────────────────────
 async function loadWeather() {
-    const tempElement = document.getElementById('weather-temp');
-    const iconElement = document.getElementById('weather-icon');
-
+    const tEl = document.getElementById('weather-temp'), iEl = document.getElementById('weather-icon');
     try {
-        // 1) Netlify Function (Production)
-        const netlifyUrl = `/.netlify/functions/weather?city=${encodeURIComponent(config.city)}`;
-
-        let response;
-        let data;
-
-        try {
-            response = await fetch(netlifyUrl);
-            if (response.ok) {
-                data = await response.json();
-                console.log('ℹ️ Using Netlify Function for weather');
-            } else {
-                throw new Error('Netlify function not available');
-            }
-        } catch (_) {
-            console.log('ℹ️ Netlify Function not available, trying direct API');
-
-            // 2) Fallback: Direkter API-Call (Development)
-            const API_KEY = config.openweather_api_key;
-
-            if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE' || API_KEY.trim() === '') {
-                throw new Error('OpenWeather API key not configured');
-            }
-
-            const directUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(config.city)}&units=metric&appid=${API_KEY}&lang=de`;
-            response = await fetch(directUrl);
-
-            if (!response.ok) {
-                if (response.status === 401) throw new Error('Invalid API key');
-                if (response.status === 404) throw new Error('City not found');
-                throw new Error(`HTTP ${response.status}`);
-            }
-
-            data = await response.json();
-            console.log('ℹ️ Using direct API for weather');
+        let data = null;
+        try { const r = await fetch(`/.netlify/functions/weather?city=${encodeURIComponent(config.city)}`); if (r.ok) data = await r.json(); } catch(_){}
+        if (!data) {
+            const k = config.openweather_api_key;
+            if (!k || k==='YOUR_API_KEY_HERE' || !k.trim()) throw new Error('Kein Key');
+            const r = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(config.city)}&units=metric&appid=${k}&lang=de`);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            data = await r.json();
         }
-
-        // Daten prüfen
-        if (!data || !data.main || !data.weather || !data.weather[0]) {
-            throw new Error('Invalid weather data received');
-        }
-
-        const temp = Math.round(data.main.temp);
-        const icon = data.weather[0].icon;
-
-        tempElement.textContent = `${temp}°C`;
-        iconElement.src = `images/weather/${icon}.png`;
-        iconElement.style.display = 'block';
-
-        console.log(`✅ Weather loaded: ${temp}°C`);
-
-    } catch (error) {
-        console.error('❌ Weather loading failed:', error.message);
-
-        let errorMessage = '⚠️ Wetter konnte nicht geladen werden';
-
-        if (error.message.includes('not configured')) {
-            errorMessage = '⚠️ Wetter-API nicht konfiguriert';
-        } else if (error.message.includes('Invalid API key')) {
-            errorMessage = '⚠️ Ungültiger Wetter-API-Schlüssel';
-        } else if (error.message.includes('City not found')) {
-            errorMessage = '⚠️ Stadt nicht gefunden';
-        }
-
-        showError(errorMessage);
-        tempElement.textContent = 'NaN°C';
-        iconElement.style.display = 'none';
+        if (!data?.main?.temp || !data?.weather?.[0]) throw new Error('Ungültig');
+        tEl.textContent = `${Math.round(data.main.temp)}°C`;
+        iEl.src = `images/weather/${data.weather[0].icon}.png`;
+        iEl.style.display = 'block';
+    } catch (e) {
+        console.error('[Wetter]', e.message);
+        tEl.textContent = '--°C'; iEl.style.display = 'none';
     }
-}
-
-// ===========================
-// UHRZEIT & DATUM
-// ===========================
-
-function updateCurrentTime() {
-    const now = new Date();
-
-    // Uhrzeit (HH:MM:SS)
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
-
-    // Wochentag (TR / DE)
-    const dayIndex = now.getDay();
-    const dayTr = DAY_NAMES.tr[dayIndex];
-    const dayDe = DAY_NAMES.de[dayIndex];
-    document.getElementById('current-day').textContent = `${dayTr} / ${dayDe}`;
-
-    // Datum (DD/MM/YYYY)
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = now.getFullYear();
-    document.getElementById('current-date').textContent = `${day}/${month}/${year}`;
-
-    // Hijri-Datum (aus der Gebetszeiten-API)
-    updateIslamicDate();
 }
 
 function updateIslamicDate() {
     const el = document.getElementById('islamic-date');
-    if (!el) return;
-
-    if (dayInfo?.hijriLong && dayInfo.hijriLong.trim() !== '') {
-        el.textContent = dayInfo.hijriLong;
-        return;
-    }
-
-    el.textContent = '-- ----- ----';
+    if (el) el.textContent = dayInfo?.hijriLong?.trim() || '-- ----- ----';
 }
 
-// ===========================
-// ANKÜNDIGUNGEN
-// ===========================
-
+// ── Ankündigungen ──────────────────────────────────────
 function updateAnnouncements() {
-    const trWrapper = document.getElementById('announcement-tr-wrapper');
-    const deWrapper = document.getElementById('announcement-de-wrapper');
-    const trText = document.getElementById('announcement-tr');
-    const deText = document.getElementById('announcement-de');
-    const announcementsCard = document.getElementById('announcements');
+    const trW = document.getElementById('announcement-tr-wrapper'), deW = document.getElementById('announcement-de-wrapper');
+    const trT = document.getElementById('announcement-tr'), deT = document.getElementById('announcement-de');
+    const box = document.getElementById('announcements');
+    let has = false;
 
-    let hasAnnouncements = false;
+    if (config.announcement_turkish?.trim()) { trT.textContent = config.announcement_turkish; trW.classList.remove('hidden'); has = true; }
+    else trW.classList.add('hidden');
+    if (config.announcement_german?.trim()) { deT.textContent = config.announcement_german; deW.classList.remove('hidden'); has = true; }
+    else deW.classList.add('hidden');
 
-    // Türkisch
-    if (config.announcement_turkish && config.announcement_turkish.trim() !== '') {
-        trText.textContent = config.announcement_turkish;
-        trWrapper.classList.remove('hidden');
-        hasAnnouncements = true;
-    } else {
-        trWrapper.classList.add('hidden');
-    }
-
-    // Deutsch
-    if (config.announcement_german && config.announcement_german.trim() !== '') {
-        deText.textContent = config.announcement_german;
-        deWrapper.classList.remove('hidden');
-        hasAnnouncements = true;
-    } else {
-        deWrapper.classList.add('hidden');
-    }
-
-    // Karte ein-/ausblenden
-    if (hasAnnouncements) {
-        announcementsCard.classList.remove('hidden');
-        announcementsCard.classList.add('show');
-    } else {
-        announcementsCard.classList.add('hidden');
-        announcementsCard.classList.remove('show');
-    }
+    box.classList.toggle('show', has);
+    box.classList.toggle('hidden', !has);
 }
 
-// ===========================
-// UHR-UPDATE & TIMER
-// ===========================
-
+// ── Start ──────────────────────────────────────────────
 function startClocks() {
-    // Uhr & Datum (jede Sekunde)
-    updateCurrentTime();
-    setInterval(updateCurrentTime, 1000);
-
-    // Countdown (jede Sekunde)
-    updateNextPrayerTimer();
-    setInterval(updateNextPrayerTimer, 1000);
-
-    // Nächstes Gebet regelmäßig neu berechnen
-    setInterval(updateNextPrayer, 60000);
+    tick(); // Sofort einmal
+    setInterval(tick, 1000); // Einziger Interval für BEIDES
+    setInterval(calcNextPrayer, 60000); // Recalc alle 60s
 }
-
-// ===========================
-// AUTO-REFRESH
-// ===========================
 
 function setupAutoRefresh() {
-    // Seite bei :00, :10, :20, :30, :40, :50 neu laden
-    setInterval(() => {
-        const now = new Date();
-        const minutes = now.getMinutes();
-
-        if (minutes % 10 === 0) {
-            console.log('🔄 Auto-refreshing page at', now.toLocaleTimeString('de-DE'));
-            location.reload();
-        }
-    }, 60000);
+    setInterval(() => { if (new Date().getMinutes() % 10 === 0) location.reload(); }, 60000);
 }
 
-// ===========================
-// APP STARTEN
-// ===========================
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();

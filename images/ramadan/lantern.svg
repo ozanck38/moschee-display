@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220" width="120" height="220">
+  <defs>
+    <!-- Soft metallic gold -->
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F6E3A6" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#D6B45A" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#B8892C" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Slightly warmer accent -->
+    <linearGradient id="goldWarm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE7B8" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#E0B55B" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#B07A22" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Glass tint -->
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD76A" stop-opacity="0.14"/>
+      <stop offset="40%" stop-color="#FFD76A" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0.12"/>
+    </linearGradient>
+
+    <!-- Inner warm glow -->
+    <radialGradient id="glow" cx="50%" cy="52%" r="62%">
+      <stop offset="0%" stop-color="#FFE7A6" stop-opacity="0.42"/>
+      <stop offset="45%" stop-color="#FFD76A" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#FFD76A" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Glass highlight strip -->
+    <linearGradient id="highlight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Soft shadow -->
+    <filter id="shadow" x="-40%" y="-30%" width="180%" height="190%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+
+    <!-- Soft glow blur -->
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" />
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <!-- Chain -->
+    <line x1="60" y1="0" x2="60" y2="28" stroke="#D6B45A" stroke-width="2" opacity="0.7"/>
+    <circle cx="60" cy="15" r="3.2" fill="none" stroke="#D6B45A" stroke-width="1.4" opacity="0.9"/>
+
+    <!-- Top cap (broader) -->
+    <path d="M40,28 Q60,16 80,28 L76,42 Q60,35 44,42 Z" fill="url(#gold)"/>
+
+    <!-- Dome -->
+    <path d="M44,42 Q60,26 76,42 L72,58 Q60,50 48,58 Z" fill="url(#goldWarm)" opacity="0.98"/>
+
+    <!-- Top ring -->
+    <ellipse cx="60" cy="58" rx="22" ry="5" fill="url(#gold)"/>
+
+    <!-- Glass body (wider + smoother silhouette) -->
+    <path d="M38,58
+             Q28,105 33,155
+             Q44,176 60,182
+             Q76,176 87,155
+             Q92,105 82,58"
+          fill="url(#glass)"
+          stroke="#C9A34A"
+          stroke-width="2"
+          opacity="0.96"/>
+
+    <!-- Inner glow -->
+    <ellipse cx="60" cy="120" rx="28" ry="56" fill="url(#glow)" filter="url(#softGlow)"/>
+    <ellipse cx="60" cy="120" rx="18" ry="36" fill="url(#glow)" opacity="0.9"/>
+
+    <!-- Subtle ribs -->
+    <path d="M50,62 Q44,118 48,170" fill="none" stroke="#C9A34A" stroke-width="1.1" opacity="0.22"/>
+    <path d="M60,58 Q59,118 60,176" fill="none" stroke="#C9A34A" stroke-width="1.1" opacity="0.22"/>
+    <path d="M70,62 Q76,118 72,170" fill="none" stroke="#C9A34A" stroke-width="1.1" opacity="0.22"/>
+
+    <!-- Minimal arabesque band (modern) -->
+    <path d="M40,106 Q49,100 60,106 Q71,112 80,106"
+          fill="none" stroke="#F1D58B" stroke-width="1.4" opacity="0.45"/>
+    <path d="M40,114 Q49,120 60,114 Q71,108 80,114"
+          fill="none" stroke="#F1D58B" stroke-width="1.4" opacity="0.32"/>
+
+    <!-- Small star (cleaner) -->
+    <polygon points="60,86 62.2,92 68.6,92 63.4,95.8 65.4,102.4 60,98.6 54.6,102.4 56.6,95.8 51.4,92 57.8,92"
+             fill="#FFD76A" opacity="0.35"/>
+
+    <!-- Glass highlight -->
+    <path d="M46,66
+             Q38,112 41,156
+             Q45,170 52,176"
+          fill="none" stroke="url(#highlight)" stroke-width="4"
+          opacity="0.75" stroke-linecap="round"/>
+
+    <!-- Bottom ring -->
+    <ellipse cx="60" cy="178" rx="21" ry="5" fill="url(#gold)"/>
+
+    <!-- Bottom cap -->
+    <path d="M44,178 Q60,190 76,178 L70,204 Q60,210 50,204 Z" fill="url(#gold)"/>
+
+    <!-- Finial -->
+    <path d="M54,204 L60,220 L66,204" fill="#D6B45A" opacity="0.9"/>
+    <circle cx="60" cy="214" r="3" fill="#F1D58B" opacity="0.9"/>
+  </g>
+</svg>
