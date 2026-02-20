@@ -19,6 +19,7 @@
 
     <!-- Haupt-Styles -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ramadan.css">
 </head>
 
 <body class="body">
@@ -27,6 +28,16 @@
      GESAMTER BILDSCHIRM-INHALT
      ================================================== -->
 <section class="section">
+
+    <!-- Ramadan Deko -->
+    <div class="ramadan-stars" aria-hidden="true"></div>
+
+    <div class="ramadan-lanterns" aria-hidden="true">
+        <img src="images/ramadan/lantern-small-modern.svg" class="ramadan-lantern-svg ramadan-lantern-svg--left-1" alt="">
+        <img src="images/ramadan/lantern-small-modern.svg" class="ramadan-lantern-svg ramadan-lantern-svg--left-2" alt="">
+        <img src="images/ramadan/lantern-large-modern.svg" class="ramadan-lantern-svg ramadan-lantern-svg--right-1" alt="">
+        <img src="images/ramadan/lantern-large-modern.svg" class="ramadan-lantern-svg ramadan-lantern-svg--right-2" alt="">
+    </div>
 
     <!-- ===============================================
          HEADER (OBERER BALKEN)
@@ -58,7 +69,7 @@
         <div class="header__weather">
             <div id="weather-temp" class="header__weather-temp">--°C</div>
             <div class="header__weather-icon-wrap">
-                <img id="weather-icon" src="" alt="Weather" class="header__weather-icon">
+                <img id="weather-icon" src="" alt="Wetter Icon" class="header__weather-icon">
             </div>
         </div>
     </div>
@@ -69,34 +80,84 @@
          =============================================== -->
     <div class="container container--main">
 
+        <!-- Ramadan Banner: lantern.svg als Bild -->
+        <div class="ramadan-banner" aria-hidden="true">
+            <img src="images/ramadan/lantern.svg" alt="" class="ramadan-banner__lantern-img">
+            <div class="ramadan-banner__text">
+                <div class="ramadan-banner__title">RAMAZAN AYIMIZ MÜBAREK OLSUN</div>
+                <div class="ramadan-banner__subtitle">Gesegneter Ramadan · Ramadan Mubarak</div>
+            </div>
+            <img src="images/ramadan/lantern.svg" alt="" class="ramadan-banner__lantern-img ramadan-banner__lantern-img--right">
+        </div>
+
         <!-- =====================
              GEBETSZEITEN
              ===================== -->
         <div class="prayers">
             <div class="prayers__grid">
 
-                <!-- Einzelne Gebetskarten -->
-                <div class="card">
+                <div class="card" data-prayer="imsak">
                     <div class="card__content">
                         <div class="card__label">İMSAK - FAJR</div>
-                        <img src="images/prayers/imsak.png" alt="Imsak" class="card__icon">
+
+                        <!-- Imsak: crescent + star -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <path d="M41.5 14.5c-9.6 1.2-17 9.3-17 19.2 0 10.6 8.6 19.2 19.2 19.2 4.2 0 8.1-1.3 11.3-3.6-3.1 6.4-9.7 10.8-17.3 10.8-10.6 0-19.2-8.6-19.2-19.2 0-9.3 6.6-17.1 15.3-18.9z"
+                                  stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" opacity=".95"/>
+                            <path d="M48.5 18.2l1.2 3.1 3.3.1-2.6 2 1 3.2-2.9-1.8-2.9 1.8 1-3.2-2.6-2 3.3-.1z"
+                                  fill="currentColor" opacity=".55"/>
+                        </svg>
+
                         <div id="prayer-imsak" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
-                <div class="card card--active">
+                <div class="card" data-prayer="gunes">
                     <div class="card__content">
                         <div class="card__label">GÜNEŞ - SUNRISE</div>
-                        <img src="images/prayers/gunes.png" alt="Güneş" class="card__icon card__icon--gunes">
+                
+                        <!-- Sunrise: sun rising over horizon -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <path d="M12 44h40" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".65"/>
+                            <path d="M20 44a12 12 0 0 1 24 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                            <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+                                <line x1="32" y1="18" x2="32" y2="12"/>
+                                <line x1="20" y1="24" x2="16" y2="20"/>
+                                <line x1="44" y1="24" x2="48" y2="20"/>
+                                <line x1="14" y1="34" x2="8" y2="34"/>
+                                <line x1="50" y1="34" x2="56" y2="34"/>
+                            </g>
+                            <path d="M8 50h48" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".35"/>
+                        </svg>
+                
                         <div id="prayer-gunes" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" data-prayer="ogle">
                     <div class="card__content">
                         <div class="card__label">ÖĞLE - DHUHR</div>
-                        <img src="images/prayers/ogle.png" alt="Öğle" class="card__icon">
+                
+                        <!-- Dhuhr: sun high (minimal, strong) -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <circle cx="32" cy="30" r="10.5" stroke="currentColor" stroke-width="2.6"/>
+                            <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+                                <line x1="32" y1="10" x2="32" y2="16"/>
+                                <line x1="32" y1="44" x2="32" y2="50"/>
+                                <line x1="12" y1="30" x2="18" y2="30"/>
+                                <line x1="46" y1="30" x2="52" y2="30"/>
+                                <line x1="18.8" y1="16.8" x2="23.2" y2="21.2"/>
+                                <line x1="40.8" y1="38.8" x2="45.2" y2="43.2"/>
+                                <line x1="45.2" y1="16.8" x2="40.8" y2="21.2"/>
+                                <line x1="23.2" y1="38.8" x2="18.8" y2="43.2"/>
+                            </g>
+                            <path d="M12 54h40" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".25"/>
+                        </svg>
+                    
                         <div id="prayer-ogle" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
@@ -125,27 +186,70 @@
                 </div>
 
                 <!-- Weitere Gebetskarten -->
-                <div class="card">
+                <div class="card" data-prayer="ikindi">
                     <div class="card__content">
                         <div class="card__label">İKİNDİ - ASR</div>
-                        <img src="images/prayers/ikindi.png" alt="İkindi" class="card__icon card__icon--ikindi">
+                        
+                        <!-- Asr: sun lower + diagonal rays -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <path d="M14 46h36" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>
+                            <circle cx="28" cy="32" r="9.5" stroke="currentColor" stroke-width="2.6"/>
+                            <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".8">
+                                <line x1="44" y1="18" x2="49" y2="13"/>
+                                <line x1="38" y1="14" x2="41" y2="7"/>
+                                <line x1="50" y1="30" x2="57" y2="27"/>
+                                <line x1="12" y1="32" x2="17" y2="32"/>
+                            </g>
+                            <path d="M10 54h44" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".25"/>
+                        </svg>
+                    
                         <div id="prayer-ikindi" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" data-prayer="aksam">
                     <div class="card__content">
                         <div class="card__label">AKŞAM - MAGHRIB</div>
-                        <img src="images/prayers/aksam.png" alt="Akşam" class="card__icon">
+                        
+                        <!-- Maghrib: sun setting below horizon -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <path d="M10 40h44" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>
+                            <path d="M20 40a12 12 0 0 0 24 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                            <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+                                <line x1="32" y1="14" x2="32" y2="20"/>
+                                <line x1="18" y1="22" x2="14" y2="18"/>
+                                <line x1="46" y1="22" x2="50" y2="18"/>
+                                <line x1="12" y1="30" x2="18" y2="30"/>
+                                <line x1="46" y1="30" x2="52" y2="30"/>
+                            </g>
+                            <path d="M14 50h36" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".30"/>
+                        </svg>
+                    
                         <div id="prayer-aksam" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" data-prayer="yatsi">
                     <div class="card__content">
                         <div class="card__label">YATSI - ISHA</div>
-                        <img src="images/prayers/yatsi.png" alt="Yatsı" class="card__icon card__icon--yatsi">
+                        
+                        <!-- Isha: moon + stars (night) -->
+                        <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none">
+                            <path d="M40.5 16.5c-8.8 1.1-15.6 8.3-15.6 17.3 0 9.6 7.8 17.4 17.4 17.4 3.8 0 7.4-1.2 10.2-3.3-2.8 5.9-8.9 9.9-15.8 9.9-9.6 0-17.4-7.8-17.4-17.4 0-8.5 6-15.6 14-17.2z"
+                                  stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" opacity=".95"/>
+                            <g fill="currentColor" opacity=".55">
+                                <path d="M49 19.2l1 2.5 2.7.1-2.1 1.6.8 2.6-2.4-1.5-2.4 1.5.8-2.6-2.1-1.6 2.7-.1z"/>
+                                <path d="M52 31.5l.8 2.0 2.1.1-1.7 1.3.6 2.1-1.8-1.1-1.8 1.1.6-2.1-1.7-1.3 2.1-.1z" opacity=".85"/>
+                                <circle cx="46" cy="36" r="1.4" opacity=".85"/>
+                                <circle cx="50" cy="41" r="1.1" opacity=".75"/>
+                            </g>
+                            <path d="M12 54h40" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".22"/>
+                        </svg>
+                      
                         <div id="prayer-yatsi" class="card__time">--:--</div>
+                        <div class="card__hint card__hint--hidden"><div class="card__hint-line1"></div><div class="card__hint-line2"></div></div>
                     </div>
                 </div>
 
@@ -160,7 +264,7 @@
 
             <div id="announcement-tr-wrapper" class="announcements__item">
                 <div class="announcements__flag-wrap">
-                    <img src="images/flag-turkey.png" alt="Türkiye" class="announcements__flag">
+                    <img src="images/flag-turkey.png" alt="Türkei-Flagge" class="announcements__flag">
                 </div>
                 <strong id="announcement-tr" class="announcements__text">
                     Camimize hoşgeldiniz
@@ -169,7 +273,7 @@
 
             <div id="announcement-de-wrapper" class="announcements__item">
                 <div class="announcements__flag-wrap">
-                    <img src="images/flag-germany.png" alt="Deutschland" class="announcements__flag">
+                    <img src="images/flag-germany.png" alt="Deutschland-Flagge" class="announcements__flag">
                 </div>
                 <strong id="announcement-de" class="announcements__text">
                     Herzlich willkommen in unserer Moschee
@@ -184,6 +288,14 @@
          =============================================== -->
     <div class="container container--footer">
         <div class="footer">
+            <div class="ramadan-day-counter">
+                <svg class="ramadan-day-counter__icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                <div class="ramadan-day-counter__info">
+                    <div class="ramadan-day-counter__text" id="ramadan-day-text">-- / --</div>
+                    <div class="ramadan-day-counter__label">Ramazan</div>
+                </div>
+            </div>
+            <div style="flex:1"></div>
             <div class="footer__credit">
                 <div class="footer__text">designed by</div>
                 <div class="footer__logo-wrap">
@@ -201,10 +313,10 @@
      ================================================== -->
 
 <!-- Konfigurationsdatei (Moschee-Name, Stadt, Ankündigungen) -->
-<script src="config.js"></script>
+ <script src="config.js"></script>
 
-<!-- Vollbild-/Kiosk-Helfer -->
-<script src="js/fullscreen.js"></script>
+<!-- Fubktionen für Ramadan-Theme -->
+<script src="js/ramadan.js"></script>
 
 <!-- Hauptlogik (Gebetszeiten, Uhr, Wetter, etc.) -->
 <script src="js/app.js"></script>

@@ -1,38 +1,21 @@
 /* =====================================================
    RESET & GRUNDEINSTELLUNGEN
-   Entfernt Browser-Standardabstände und sorgt für
-   einheitliches Verhalten auf allen Geräten
    ===================================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* =====================================================
    BODY & HAUPTBEREICH
-   Grundlayout für den kompletten Bildschirm
-   (TV / Smartboard / Kiosk-Modus)
    ===================================================== */
-
 .body {
     color: #fff;
-    min-width: 1280px;
-    min-height: 720px;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+    min-width: 1280px; min-height: 720px;
+    width: 100vw; height: 100vh;
     overflow: hidden;
     font-family: Montserrat, sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.2;
+    font-size: 1rem; font-weight: 500; line-height: 1.2;
 }
 
 .section {
-    /* Hintergrundbild + dunkler Overlay-Effekt */
     background-image: linear-gradient(#000c, #000c), url('../images/background.png');
     background-position: 0 0, 50%;
     background-size: auto, auto;
@@ -40,24 +23,18 @@
     flex-flow: column;
     justify-content: flex-start;
     align-items: stretch;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+    width: 100vw; height: 100vh;
+    display: flex; overflow: hidden;
+    position: relative;
 }
 
 /* =====================================================
    CONTAINER
-   Wiederverwendbare Layout-Blöcke
-   Header · Hauptbereich · Footer
    ===================================================== */
-
 .container {
-    /* Allgemeines Layout für alle Container */
     flex-flow: column;
     justify-content: space-between;
-    width: 100%;
-    max-width: 100%;
+    width: 100%; max-width: 100%;
     padding-left:  min(clamp(2rem, 5vw, 8rem), 6vw);
     padding-right: min(clamp(2rem, 5vw, 8rem), 6vw);
     padding-top:   min(clamp(1rem, 2vw, 3rem), 3vh);
@@ -66,189 +43,123 @@
 }
 
 .container--header {
-    /* Oberer Balken (Logo, Moschee-Name, Wetter) */
     background-color: #0c8aa4a6;
-    flex-flow: row;
-    justify-content: space-between;
-    align-self: center;
-    align-items: center;
+    flex-flow: row; justify-content: space-between;
+    align-self: center; align-items: center;
     height: 12vh;
-    padding-top: 0%;
-    padding-bottom: 0%;
+    padding-top: 0; padding-bottom: 0;
     display: inline-flex;
     box-shadow: 0 0 20px 16px #0000001a;
 }
 
 .container--main {
-    /* Hauptinhalt (Gebetszeiten & Infos) */
     min-height: 0;
     height: 80vh;
-    gap: clamp(1rem, 2vw, 3rem); /* Same as vertical padding */
+    gap: min(clamp(1rem, 2vw, 3rem), 3vh); /* Same as vertical padding */
 }
 
 .container--footer {
-    /* Unterer Balken (Footer / Credit) */
     background-color: #ff000080;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: flex-end; align-items: center;
     height: 8vh;
-    padding-top: 0%;
-    padding-bottom: 0%;
-    display: flex;
-    flex-flow: row;
+    padding-top: 0; padding-bottom: 0;
+    display: flex; flex-flow: row;
     box-shadow: 0 0 20px 16px #0000001a;
 }
 
 /* =====================================================
    HEADER
-   Logo · Moschee-Name · Stadt · Wetter
    ===================================================== */
-
-.header__logo {
-    /* Logo-Bereich */
-    height: 80%;
-    margin-right: auto;
-}
-
-.header__logo-img {
-    height: 100%;
-}
+.header__logo { height: 80%; margin-right: auto; }
+.header__logo-img { height: 100%; }
 
 .header__info {
-    /* Moschee-Name & Untertitel */
-    flex-flow: column;
-    flex: 0 auto;
-    justify-content: space-around;
-    align-items: center;
-    height: 80%;
-    display: flex;
+    flex-flow: column; flex: 0 auto;
+    justify-content: space-around; align-items: center;
+    height: 80%; display: flex;
 }
 
 .header__title {
-    letter-spacing: .1ch;
-    text-transform: uppercase;
-    margin: 0;
-    font-size: min(clamp(2rem, 3.5vw, 4rem), 5.2vh);
-    line-height: 1.2;
+    letter-spacing: .1ch; text-transform: uppercase; margin: 0;
+    font-size: min(clamp(2rem, 3.4vw, 4rem), 5.2vh); line-height: 1;
 }
 
-.header__divider {
-    color: #ffffffe6;
-    background-color: #fff;
-    width: 120%;
-    max-width: 100%;
-    height: 2px;
-    position: relative;
-    margin-bottom: .4rem;
+.header__divider { 
+    background: linear-gradient(90deg, transparent, #fff 10%, #fff 90%, transparent);
+    width: 120%; max-width: 100%;
+    height: 2px; min-height: 2px;
+    flex-shrink: 0;
+    position: relative; margin-bottom: .4rem;
 }
 
 .header__subtitle {
-    text-align: center;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    text-align: center; letter-spacing: 1px; text-transform: uppercase;
     font-size: min(clamp(1rem, 1.5vw, 1.6rem), 2.2vh);
 }
 
 .header__weather {
-    /* Temperatur & Wetter-Icon */
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 50%;
-    margin-left: auto;
-    display: flex;
+    grid-column-gap: 10px; grid-row-gap: 10px;
+    justify-content: flex-start; align-items: center;
+    height: 50%; margin-left: auto; display: flex;
 }
 
-.header__weather-temp {
-    font-size: clamp(1.5rem, 2.5vw, 3rem);
-    line-height: 1;
-}
-
-.header__weather-icon-wrap {
-    height: 100%;
-}
-
-.header__weather-icon {
-    width: 100%;
-    height: 100%;
-}
+.header__weather-temp { font-size: clamp(1.5rem, 2.4vw, 3rem); line-height: 1; }
+.header__weather-icon-wrap { height: 100%; }
+.header__weather-icon { width: 100%; height: 100%; }
 
 /* =====================================================
    GEBETSZEITEN-GITTER
-   Raster für alle Gebetskarten + Info-Karte
    ===================================================== */
-
 .prayers {
-    /* Zentriert den Gebetsbereich */
-    min-height: 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    min-height: 0; height: 100%;
+    display: flex; align-items: center;
 }
 
 .prayers__grid {
-    /* 2 Reihen, mehrere Spalten */
     min-height: 0;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1.4fr;
     grid-row-gap:    min(clamp(0.75rem, 1.5vw, 2rem), 2.2vh);
     grid-column-gap: min(clamp(0.75rem, 1.5vw, 2rem), 2.2vh);
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     display: grid;
 }
 
-/* Zentriert Raster, wenn keine Ankündigung vorhanden ist */
-.container--main:has(.announcements.hidden) .prayers {
-    justify-content: center;
-}
+.container--main:has(.announcements.hidden) .prayers { justify-content: center; }
 
 /* =====================================================
-   KARTEN (GEBETE & INFO)
-   Einheitliches Design für alle Boxen
+   KARTEN
    ===================================================== */
-
 .card {
-    /* Standard-Karten-Stil */
     position: relative;
     filter: drop-shadow(0 4px 16px #0006);
-    -webkit-backdrop-filter: blur(1px);
-    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px);
     color: #ffffffe6;
     background-color: #0c8aa405;
     background-image: linear-gradient(170deg, #ffffff59, #ffffff40 33%, #ffffff26 67%, #ffffff1a);
     border: 2px solid #fff3;
     border-radius: clamp(8px, 1vw, 12px);
-    overflow: hidden;
-    transition: all 0.5s ease;
+    overflow: hidden; transition: all 0.5s ease;
 }
 
 .card--active {
-    /* Hervorgehobene Karte (aktuelles Gebet) */
-    -webkit-backdrop-filter: blur(1.5px);
-    backdrop-filter: blur(1.5px);
-    color: #fff;
-    background-color: #ff00000a;
+    -webkit-backdrop-filter: blur(1.5px); backdrop-filter: blur(1.5px);
+    color: #fff; background-color: #ff00000a;
     background-image: linear-gradient(170deg, #ffffff73, #fff6 20%, #ffffff4d 65%, #fff3);
     border-color: #ffffff80;
     filter: drop-shadow(0 6px 22px #0008);
 }
 
 .card--info {
-    /* Große mittlere Infokarte */
     grid-area: span 2 / span 1 / span 2 / span 1;
-    flex-flow: column;
-    justify-content: space-between;
-    display: flex;
+    flex-flow: column; justify-content: space-between; display: flex;
 }
 
+/* ── Card Content: vertikal zentriert ────────────── */
 .card__content {
     flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+    justify-content: space-between; align-items: center;
+    width: 100%; height: 100%;
     padding-top:    min(clamp(0.75rem, 1.5vw, 2rem), 2vh);
     padding-bottom: min(clamp(0.75rem, 1.5vw, 2rem), 2vh);
     padding-left:   min(clamp(0.5rem, 1vw, 1.5rem), 1.6vw);
@@ -259,68 +170,79 @@
 .card__label {
     text-transform: uppercase;
     font-size: clamp(1.1rem, 1.6vw, 1.8rem);
-    font-weight: 600;
+    font-weight: 600; text-align: center; line-height: 1.1;
+    flex-shrink: 0;
 }
 
 .card__icon {
-    opacity: .9;
-    height: min(clamp(4rem, 7vh, 8rem), 8vh);
-}
-
-.card__icon--gunes {
-    height: min(clamp(4.2rem, 7.5vh, 8.5rem), 8.2vh);
-}
-
-.card__icon--ikindi {
-    height: min(clamp(3.8rem, 6.5vh, 7.5rem), 7.2vh);
-}
-
-.card__icon--yatsi {
-    height: min(clamp(3.6rem, 6vh, 7rem), 6.8vh);
+    height: min(clamp(4rem, 8vh, 10rem), 10vh);
+    opacity: .9; flex-shrink: 1;
+    min-height: 0;
 }
 
 .card__time {
     text-transform: uppercase;
     letter-spacing: .2ch;
-    font-size: clamp(1.2rem, 1.8vw, 2rem);
-    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 3rem);
+    font-weight: 600; line-height: 1;
+    flex-shrink: 0;
+}
+
+/* ── Hint-Slot (verborgen wenn leer) ────────────── */
+.card__hint { display: none; }
+.card__hint--visible {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 0.05rem;
+    flex-shrink: 0;
+}
+
+.card__hint-line1 {
+    font-size: min(clamp(0.4rem, 0.65vw, 0.65rem), 0.85vh);
+    font-weight: 500; color: rgba(255,255,255,0.6);
+    text-align: center; line-height: 1.2;
+}
+
+.card__hint-line2 {
+    display: flex; align-items: center; gap: 0.15rem;
+    font-size: min(clamp(0.5rem, 0.8vw, 0.8rem), 1vh);
+    font-weight: 600; color: rgba(255,255,255,0.8); line-height: 1;
+}
+
+.card__hint-icon {
+    width: min(clamp(0.45rem, 0.65vw, 0.65rem), 0.85vh);
+    height: min(clamp(0.45rem, 0.65vw, 0.65rem), 0.85vh);
+    flex-shrink: 0;
 }
 
 /* =====================================================
    INFO-KARTE (MITTE)
-   Uhr · Datum · Countdown
    ===================================================== */
 
-.info__section {
-    /* Oberer & unterer Bereich der Info-Karte */
-    flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: clamp(1rem, 2vw, 3rem);
+   .info__section {
+    flex-flow: column; justify-content: space-between; align-items: center;
+    width: 100%; height: 100%;
     display: flex;
-}
-
-.info__section--lower {
-    grid-column-gap: clamp(1rem, 2vw, 3rem);
-    grid-row-gap: clamp(1rem, 2vw, 3rem);
-    justify-content: center;
-    align-items: center;
     padding: clamp(0.75rem, 1.5vw, 2rem);
 }
 
+.info__section--lower {
+
+    flex-flow: column; justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    padding: clamp(0.75rem, 1.5vw, 2rem);
+    width: 100%; height: 100%;
+}
+
 .info__clock {
-    /* Große Uhrzeit / Countdown */
     text-align: center;
-    font-size: min(clamp(2rem, 3.5vw, 4rem), 6vh);
+    font-size: min(clamp(2rem, 3.2vw, 4rem), 5.6vh);
     letter-spacing: min(clamp(6px, 1vw, 12px), 1.2vh);
     font-weight: 700;
     line-height: 1;
 }
 
 .info__text {
-    /* Datum, Wochentag, Hijri-Datum */
     color: #fffc;
     text-align: center;
     font-size: min(clamp(1rem, 1.4vw, 1.6rem), 2.8vh);
@@ -328,15 +250,14 @@
 }
 
 .info__divider {
-    color: #ffffffe6;
-    background-color: #fff;
-    width: 80%;
-    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffffff80 10%, #ffffff80 90%, transparent);
+    width: 80%; max-width: 100%; height: 2px; min-height: 2px;
+    flex-shrink: 0; margin: 0 auto;
     align-self: center;
-    margin: 0 auto;
 }
 
 .info__label {
+    text-transform: uppercase;
     color: #fffc;
     text-align: center;
     font-size: min(clamp(1.1rem, 1.6vw, 1.8rem), 2.4vh);
@@ -347,18 +268,14 @@
     color: #fffc;
     text-align: center;
     text-transform: uppercase;
-    font-size: min(clamp(1.2rem, 1.8vw, 2.2rem), 2.6vh);
+    font-size: min(clamp(1.4rem, 2vw, 2.4rem), 2.8vh);
     font-weight: 600;
 }
 
 /* =====================================================
    ANKÜNDIGUNGEN
-   Türkisch & Deutsch
-   Werden nur angezeigt, wenn Inhalte vorhanden sind
    ===================================================== */
-
 .announcements {
-    /* Ankündigungs-Container */
     grid-column-gap: clamp(0.5rem, 1vw, 1.5rem);
     grid-row-gap: clamp(0.5rem, 1vw, 1.5rem);
     background-color: #0000004d;
@@ -366,20 +283,15 @@
     justify-content: center;
     align-items: stretch;
     flex-shrink: 0;
-    min-height: clamp(80px, 12vh, 140px);
-    display: none; /* Hidden by default, JavaScript shows if needed */
-}
-
-.announcements.show {
-    display: flex;
-}
-
-.announcements.hidden {
+    min-height: clamp(6rem, 14vh, 16rem);
+    display: none;
     display: none;
 }
 
+.announcements.show { display: flex; }
+.announcements.hidden { display: none; }
+
 .announcements__item {
-    /* Einzelne Ankündigung (mit Flagge) */
     grid-column-gap: clamp(0.75rem, 1.5vw, 2rem);
     grid-row-gap: clamp(0.75rem, 1.5vw, 2rem);
     align-items: center;
@@ -389,148 +301,60 @@
     font-weight: 500;
     display: flex;
 }
+.announcements__item.hidden { display: none; }
 
-.announcements__item.hidden {
-    display: none;
-}
-
-.announcements__flag-wrap {
-    height: clamp(1.5rem, 2.5vh, 2.5rem);
-    flex-shrink: 0;
-}
-
+.announcements__flag-wrap { height: clamp(1.5rem, 2.5vh, 2.5rem); flex-shrink: 0; }
 .announcements__flag {
     border-radius: clamp(3px, 0.5vw, 6px);
-    height: 100%;
-    width: auto;
-    aspect-ratio: 3/2;
-    object-fit: cover;
+    height: 100%; width: auto; aspect-ratio: 3/2; object-fit: cover;
 }
 
 .announcements__text {
-    /* Text der Ankündigung */
     color: #fff;
-    font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+    font-size: clamp(1rem, 1.6vw, 1.6rem);
     font-weight: 500;
 }
 
 /* =====================================================
    FOOTER
-   Wird nur sichtbar, wenn keine Ankündigungen aktiv sind
    ===================================================== */
-
 .footer {
-    /* Footer-Zeile */
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-    margin-bottom: 2px;
-    margin-left: auto;
-    display: flex;
+    justify-content: flex-end; align-items: center;
+    height: 80%; margin-bottom: 2px;
+    display: flex; width: 100%;
 }
 
 .footer__credit {
-     /* "designed by" ozancan */
-    grid-column-gap: clamp(.2rem, .4vw, .8rem);
-    grid-row-gap: clamp(.2rem, .4vw, .8rem);
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+    gap: clamp(.2rem, .4vw, .8rem);
+    flex-flow: row; justify-content: center; align-items: center; display: flex;
 }
 
-.footer__text {
-    font-size: clamp(1rem, 1.4vw, 1.6rem);
-    line-height: 1;
-}
-
-.footer__logo-wrap {
-    height: 80%;
-    margin-right: auto;
-    height: auto;
-    align-self: auto;
-}
-
-.footer__logo {
-    width: 100%;
-    height: clamp(.8rem, 1vw, 1.4rem);
-    vertical-align: middle;
-}
+.footer__text { font-size: clamp(1rem, 1.4vw, 1.6rem); line-height: 1; }
+.footer__logo-wrap { height: auto; }
+.footer__logo { width: 100%; height: clamp(.8rem, 1vw, 1.4rem); vertical-align: middle; }
 
 /* =====================================================
-   HILFSKLASSEN
-   Für dynamisches Ein-/Ausblenden per JavaScript
+   HILFSKLASSEN & ANIMATIONEN
    ===================================================== */
-
-.hidden {
-    display: none;
-}
-
-/* =====================================================
-   ANIMATIONEN
-   - Pulsieren bei kurzem Countdown
-   - Ein-/Ausblenden von Fehlermeldungen
-   ===================================================== */
+.hidden { display: none; }
 
 @keyframes pulse {
-    /* Countdown-Warnanimation */
-    0%, 100% { 
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% { 
-        opacity: 0.7;
-        transform: scale(1.05);
-    }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.7; transform: scale(1.05); }
 }
+.info__clock--urgent { animation: pulse 2s ease-in-out infinite; color: #ffcc00 !important; }
 
-.info__clock--urgent {
-    animation: pulse 2s ease-in-out infinite;
-    color: #ffcc00 !important;
-}
-
-@keyframes slideIn {
-    /* Fehlerbox erscheint */
-    from { 
-        transform: translateX(400px);
-        opacity: 0;
-    }
-    to { 
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOut {
-    /* Fehlerbox verschwindet */
-    from { 
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to { 
-        transform: translateX(400px);
-        opacity: 0;
-    }
-}
-
-/* =====================================================
-   FEHLERMELDUNG (TOAST)
-   Kleine Warnbox oben rechts
-   ===================================================== */
+@keyframes slideIn  { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
 
 .error-toast {
-    /* Styling der Fehleranzeige */
-    position: fixed;
-    top: clamp(1rem, 2vw, 2rem);
-    right: clamp(1rem, 2vw, 2rem);
+    position: fixed; top: clamp(1rem, 2vw, 2rem); right: clamp(1rem, 2vw, 2rem);
     background: linear-gradient(135deg, #ff4444, #cc0000);
     color: white;
     padding: clamp(0.75rem, 1.5vw, 1.5rem) clamp(1rem, 2vw, 2rem);
     border-radius: clamp(6px, 1vw, 10px);
-    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
-    font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem); font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 9999;
     animation: slideIn 0.3s ease, slideOut 0.3s ease 4.7s;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255,255,255,0.3);
 }
